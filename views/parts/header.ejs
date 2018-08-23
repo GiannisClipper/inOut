@@ -1,0 +1,21 @@
+﻿<div class="container">
+
+  <nav>
+    <a class="logo<% if (page==='home') { %> selected<% } %>" href="http://localhost:3000">
+    <div class='letters'>
+      <span class="i">i</span>
+      <span class="n">n</span>
+      <span class="o">O</span>
+      <span class="u">u</span>
+      <span class="t">t</span>
+    </div>
+    <p>Διαχείριση Ταμείου</p>
+    </a>
+
+    <a class="<% if (page==='info') { %>selected<% } %>" href="http://localhost:3000/info/form">Ενημερωτικό</a>
+    <a class="<% if (page==='trans') { %>selected<% } %>" href="http://localhost:3000/trans/form">Κινήσεις</a>
+    <a class="<% if (page==='genres') { %>selected<% } %>" href="http://localhost:3000/genres/form">Κατηγορίες</a>
+    <a class="<% if (page==='funds') { %>selected<% } %>" href="http://localhost:3000/funds/form">Λογαριασμοί</a>
+    <a class="<% if (page==='users') { %>selected<% } %>" href="http://localhost:3000/users/form">Χρήστες</a>
+  </nav>
+</div>
