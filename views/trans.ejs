@@ -1,0 +1,47 @@
+﻿<!DOCTYPE=html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <% var page='trans'; %>
+  <% include ./parts/head.ejs %>
+
+<!--<style>.record.focused::after {content: "<focused";}</style>-->
+  <style>
+    .form .grid .id {width: 4rem;}
+    .form .grid .date {width: 5rem;}
+    .form .grid .genre_name {width: 12rem;}
+    .form .grid .income {width: 5rem;}
+    .form .grid .outgo {width: 5rem;}
+    .form .grid .fund_name {width: 8rem;}
+    .form .grid .remarks {width: 8rem;}
+  </style>
+
+  <!--τα paths ορίζονται ως προς το /public-->
+  <script type="text/javascript" src="/js/transform.js"></script>
+  <script type="text/javascript" src="/js/lib.js"></script>
+  <script type="text/javascript" src="/js/dateinput.js"></script>
+  <script type="text/javascript" src="/js/floatinput.js"></script>
+  <script type="text/javascript" src="/js/relation.js"></script>
+</head>
+
+<body>
+  <header>
+    <% include ./parts/header.ejs %>
+  </header>
+
+  <section>
+    <div class="container">
+      Loading...
+    </div>
+  </section>
+
+  <footer>
+    <% include ./parts/footer.ejs %>
+  </footer>
+  
+  <script type="text/javascript">
+    const form=new TransForm(document.querySelector('SECTION > .container'));
+    window.onload=()=> form.init();
+  </script>
+</body>
+</html>
