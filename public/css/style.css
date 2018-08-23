@@ -1,0 +1,376 @@
+/* clear defaults */
+
+* {
+  box-sizing: border-box; //chrome
+  -moz-box-sizing: border-box; //mozilla
+  -webkit-box-sizing: border-box; //safari & chrome
+  padding: 0px;
+  margin: 0px;
+  border: 0px;
+}
+
+a {
+  text-decoration: none;
+  color: #1a2231;
+}
+
+ul {
+  list-style: none;
+}
+
+input[disabled] {
+  pointer-events: none;
+}
+
+select {
+  -moz-appearance: none; //for Firefox
+  -webkit-appearance: none; //for Chrome
+}
+
+select::-ms-expand { //for IE10
+  display: none;
+}
+
+
+/* initials */
+
+@media only screen and (max-width: 600px) {
+html {
+  font-size: 66%;
+}
+}
+@media only screen and (min-width: 601px) and (max-width: 800px) {
+html {
+  font-size: 85%;
+}
+}
+@media only screen and (min-width: 801px) {
+html {
+  font-size: 100%;
+}
+}
+
+:root {
+  --color-light: rgba(160, 180, 160, 1);
+  --color-dark: rgba(140, 160, 140, 1); 
+  --color-find: rgba(240, 240, 160, 1); 
+  --color-new: rgba(110, 210, 250 , 1); 
+  --color-modify: rgba(130, 240, 150, 1); 
+  --color-delete: rgba(250, 140, 140, 1); 
+  --color-ok: var(--color-modify); 
+  --color-cancel: var(--color-delete);
+}
+
+body {
+  background-color: #1a2231;
+  color: lightgrey;
+  line-height: 1.5;
+  cursor: default;
+}
+
+* {
+  font-family: "Calibri", sans-serif;
+  font-weight: normal;
+  font-style: normal;
+}
+
+.container {
+  width: 48rem;
+  margin-left: auto;
+  margin-right: auto;
+//  border: 1px dotted white;
+}
+
+
+/* Header */
+
+header {
+  background-color: var(--color-light);
+  color: var(--color-light);
+  z-index: 2;
+}
+
+nav a {
+  width: 6rem;
+  height: 6rem;
+  display: inline-block;
+  text-align: center;
+  background-color: transparent;
+  margin: 0 -2px;
+  line-height: 9.25;
+  vertical-align: middle;
+  border-right: 1px solid var(--color-dark);
+}
+
+nav a.logo {
+  width: 14rem;
+  line-height: 1.5;
+  overflow: hidden;
+  border-left: 1px solid var(--color-dark);
+}
+
+nav a.logo .letters {
+  padding: 0.66rem 0rem;
+  position: relative;
+  left: 1rem;
+}
+
+nav a.logo span {
+  width: 1.5rem;
+  display: inline-block;
+  border : 1px solid #1a2231;;
+  font-size: 1.66rem;
+  text-align: center;
+  position: relative;
+}
+
+nav a.logo span.i {left: 0px; top: 8px;}
+nav a.logo span.n {left: -0.6rem; top:12px;}
+nav a.logo span.o {left: -0.9rem; top: 2px;}
+nav a.logo span.u {left: -1.3rem; top: 6px;}
+nav a.logo span.t {left: -1.8rem; top:10px;}
+
+nav a.selected, nav a:hover {
+  background-color:  var(--color-dark);
+  transition-property: background-color height;
+  transition-duration: 1s;
+}
+
+
+/* Section */
+
+section {
+  width: 100%;
+  height: 32rem;
+//  border: 1px dotted blue;
+
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+
+  overflow: hidden;
+}
+
+
+/* form */
+
+.form .commands {
+  margin-bottom: 1rem;
+}
+
+.form .controls {
+  margin-top: 1.5rem;
+  height: 3rem;
+}
+
+.form .commands, .form .controls {
+  text-align: center;
+}
+
+.form .commands input[type='button'], .form .controls input[type='button'] {
+  width: 6rem;
+  height: 2rem;
+  margin: 1px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.form .controls input.info {
+  width: 12rem;
+}
+
+.form .commands input.toggle {background-color: var(--color-light); color: black;}
+.form .commands input.clear {background-color: transparent; border: 1px solid var(--color-light); color: var(--color-light);}
+.form .commands input.find {background-color: var(--color-find);}
+.form .commands input.new {background-color: var(--color-new);}
+.form .commands input.modify {background-color: var(--color-modify);}
+.form .commands input.delete {background-color: var(--color-delete);}
+.form .commands input.ok {background-color: var(--color-ok);}
+.form .commands input.cancel {background-color: var(--color-cancel);}
+
+.form .controls input[type='button'] {background-color: var(--color-find);}
+
+.form .controls .order > * {
+  display: inline-block;
+  vertical-align: middle;
+  height: 2rem;
+  color: black;
+  background-color: var(--color-find);
+  border: 1px dashed black;
+}
+
+.form .controls .order > span:not(.right_arrow) {
+  border: 0;
+  padding: 0.25rem;
+  font-size: 0.9rem; //smaller;
+}
+
+.form .controls .order > .right_arrow {
+  background-color: transparent;
+  border-top: 1.5rem solid transparent;
+  border-left: 2rem solid var(--color-find);
+  border-bottom: 1.5rem solid transparent;
+  border-right: 0;
+}
+
+.form .record ._ {background-color: transparent; color: white;}
+.form .record :not(._tmp)._.onfind {background-color: var(--color-find); color: black;}
+.form .record :not(._tmp)._.onnew {background-color: var(--color-new); color: black;}
+.form .record :not(._tmp)._.onmodify {background-color: var(--color-modify); color: black;}
+.form .record :not(._tmp)._.ondelete {background-color: var(--color-delete); color: black;}
+
+/* card */
+
+.form .card {
+  text-align: center;
+}
+
+.form .card .record .left,
+.form .card .record .right {
+  display: inline-block;
+  vertical-align: middle;
+  text-align: left;
+  margin: 0 1rem;
+}
+
+.form .card .record > div {
+  line-height: 2.25;
+}
+
+.form .card .record div div > input, 
+.form .card .record div div > select {
+  height: 2rem;
+  font-size: 0.9rem;
+  border: 1px solid var(--color-light);
+}
+
+.form .card .record div div > input:enabled, 
+.form .card .record div div > select:enabled {
+  border: 1px dashed black;
+}
+
+.form .card .record .id {width: 4rem;}
+.form .card .record .code {width: 4rem;}
+.form .card .record .name {width: 16rem;}
+.form .card .record .inout {width: 4rem;}
+.form .card .record .fund_name {width: 16rem;}
+
+.form .card .record .date {width: 8rem;}
+.form .card .record .genre_name {width: 16rem;}
+.form .card .record .income {width: 8rem;}
+.form .card .record .outgo {width: 8rem;}
+.form .card .record .remarks {width: 16rem;}
+
+
+/* canvas */
+
+.form .card .record .canvas {
+  display: block; 
+  height: 128px
+}
+
+.form .card .record .canvas canvas {
+  border: 1px solid var(--color-light);
+}
+
+.form .card .record .canvas .tools .button, 
+.form .card .record .canvas .tools .url {
+  display: block; 
+  border: 0; 
+  width: 8rem;
+  font-size: 0.8rem; //smaller;
+  font-weight: 0;
+}
+
+
+/* relation */
+
+.form .record .genre_list,
+.form .record .fund_list {
+  position: absolute;
+  height: 8rem;
+  width: 14rem;
+  margin-top: 1rem;
+  margin-left: -14rem;
+  background-color: var(--color-find);
+  font-size: 0.9rem; //smaller;
+  color: black;
+  line-height: 1.25;
+  text-align: left;
+}
+
+.form .record .genre_list > li > input,
+.form .record .fund_list > li > input {
+  max-width: 12rem;
+  background-color: transparent;
+  margin: 0.25rem;
+  margin-left: -2rem;
+  text-align: left;
+}
+
+
+/* grid */
+
+.form .grid .titles, 
+.form .grid .record {
+  height: 2rem;
+  text-align: center;
+}
+
+.form .grid .titles > span {
+  display: inline-block;
+}
+
+.form .grid .titles > span,
+.form .grid .record > input, 
+.form .grid .record > select {
+  height: 2rem;
+  margin: 1px;
+  padding: 1px;
+  border: 1px solid transparent;
+}
+
+.form .grid .titles > span {
+  font-size: 0.9rem; //smaller;
+  color: var(--color-light);
+  text-align: left;
+  border-bottom: 1px solid var(--color-light);
+}
+
+.form .grid .record.focused > input,
+.form .grid .record.focused > select {
+  border-color: var(--color-light);
+}
+
+.form .grid .record > input:enabled, 
+.form .grid .record > select:enabled {
+  border: 1px dashed black;
+}
+
+
+/* Footer */
+
+footer {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  font-size: 0.9rem;
+  text-align: center;
+  color: var(--color-dark);
+}
+
+/* Login */
+.login {
+  border: 1px solid red;
+  padding: 40 10;
+  margin: auto;
+}
+.login * {
+  display: inline-block;
+}
+.login a {
+  border: 1px solid #268e70;
+}
