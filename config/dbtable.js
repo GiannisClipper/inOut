@@ -3,10 +3,6 @@
 const g=require('../config/globals.js');
 
 module.exports={
-  form: function (name, req, res) {
-    res.render(name+'.ejs'); //,{username: req.session.user.name});
-  },
-
   new: function (name, req, res) {
     let sql=`INSERT INTO ${name}`;
     sql+=(req.body.rawData.map((x,i)=> `${(i===0?' (':', ')}${x.name}`).join(''));
