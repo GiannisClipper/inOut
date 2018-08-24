@@ -4,7 +4,7 @@ const g=require('../config/globals.js');
 const table=require('../config/dbtable.js');
 
 exports.form=function (req, res) {
-  table.form('funds',req, res);
+  res.render('funds.ejs'); //,{username: req.session.user.name});
 }
 
 exports.new=function (req, res) {
