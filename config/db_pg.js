@@ -12,12 +12,12 @@ exports.setup=async function() {
     g.db=new Pool({connectionString: connectionString}); //local pg
   }
 
-  g.db.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
-    if (err) throw err;
-    for (let row of res.rows) {
-      console.log(JSON.stringify(row));
-    }
-  });
+//  g.db.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
+//    if (err) throw err;
+//    for (let row of res.rows) {
+//      console.log(JSON.stringify(row));
+//    }
+//  });
 
   const tables=[{
   name: 'users',
@@ -27,7 +27,8 @@ exports.setup=async function() {
           password TEXT NOT NULL,
           level TEXT,
           icon TEXT);`,
-  index: [`CREATE INDEX usersName ON users (name);`]
+  index: [`CREATE INDEX usersName ON users (name);`,
+          `INSERT INTO users (name, password, level) VALUES ('admin', 'admin', 'admin');`]
   },{
   name: 'funds',
   stru: `CREATE TABLE IF NOT EXISTS funds
