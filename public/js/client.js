@@ -18,7 +18,7 @@ function request(url='', data={}) {
       const errors=localVerify(url, data);
       (errors===null)?resolve():reject(errors);
     }) 
-    .then(()=> fetch('http://localhost:3000'+url, initFetch(data)))
+    .then(()=> fetch(url, initFetch(data)))  //.then(()=> fetch('http://localhost:3000'+url, initFetch(data)))
     .then(response=> response.json());
 };
 
