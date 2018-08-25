@@ -34,14 +34,19 @@ select::-ms-expand { //for IE10
 
 /* initials */
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 480px) {
 html {
-  font-size: 66%;
+  font-size: 55%;
 }
 }
-@media only screen and (min-width: 601px) and (max-width: 800px) {
+@media only screen and (max-width: 640px) {
 html {
-  font-size: 85%;
+  font-size: 65%;
+}
+}
+@media only screen and (min-width: 641px) and (max-width: 800px) {
+html {
+  font-size: 80%;
 }
 }
 @media only screen and (min-width: 801px) {
@@ -51,8 +56,9 @@ html {
 }
 
 :root {
-  --color-light: rgba(160, 180, 160, 1);
-  --color-dark: rgba(140, 160, 140, 1); 
+  --color-body: rgba(8, 18, 48); //#1a2231;
+  --color-light: rgba(160, 170, 160, 1);
+  --color-dark: rgba(140, 150, 140, 1); 
   --color-find: rgba(240, 240, 160, 1); 
   --color-new: rgba(110, 210, 250 , 1); 
   --color-modify: rgba(130, 240, 150, 1); 
@@ -62,7 +68,7 @@ html {
 }
 
 body {
-  background-color: #1a2231;
+  background-color: var(--color-body);
   color: lightgrey;
   line-height: 1.5;
   cursor: default;
@@ -75,10 +81,11 @@ body {
 }
 
 .container {
-  width: 48rem;
+  max-width: 50em;
   margin-left: auto;
   margin-right: auto;
-//  border: 1px dotted white;
+  text-align: center;
+//  border: 1px dotted cyan;
 }
 
 
@@ -100,6 +107,8 @@ nav a {
   line-height: 9.25;
   vertical-align: middle;
   border-right: 1px solid var(--color-dark);
+  transition-property: display;
+  transition-duration: 0.1s;
 }
 
 nav a.logo {
@@ -136,6 +145,13 @@ nav a.selected, nav a:hover {
   transition-duration: 1s;
 }
 
+nav.login a.logo {
+  width: 50rem;
+}
+
+nav.login a:not(.logo) {
+  display: none;
+}
 
 /* Section */
 
@@ -153,6 +169,38 @@ section {
   -webkit-box-align: center;
 
   overflow: hidden;
+}
+
+
+/* Login */
+
+.login {
+  display: inline-block;
+  text-align: left;
+}
+
+.login * {
+  display: block;
+}
+
+.login input[type="text"],
+.login input[type="password"] {
+  width: 12rem;
+  height: 2rem;
+  font-size: 0.9rem;
+  color: white;
+  background-color: transparent;
+  border: 1px solid var(--color-light);
+  margin-bottom: 1.5em;
+}
+
+.login input[type="button"] {
+  width: 12rem;
+  height: 2rem;
+  font-size: 0.9rem;
+  background-color: var(--color-ok);
+  cursor: pointer;
+  margin-top: 2.75em;
 }
 
 
@@ -223,6 +271,7 @@ section {
 .form .record :not(._tmp)._.onmodify {background-color: var(--color-modify); color: black;}
 .form .record :not(._tmp)._.ondelete {background-color: var(--color-delete); color: black;}
 
+
 /* card */
 
 .form .card {
@@ -256,6 +305,7 @@ section {
 .form .card .record .id {width: 4rem;}
 .form .card .record .code {width: 4rem;}
 .form .card .record .name {width: 16rem;}
+
 .form .card .record .inout {width: 4rem;}
 .form .card .record .fund_name {width: 16rem;}
 
@@ -265,6 +315,8 @@ section {
 .form .card .record .outgo {width: 8rem;}
 .form .card .record .remarks {width: 16rem;}
 
+.form .card .record .password {width: 8rem;}
+.form .card .record .level {width: 4rem;}
 
 /* canvas */
 
@@ -351,6 +403,24 @@ section {
   border: 1px dashed black;
 }
 
+.form .grid .id {width: 4rem;}
+.form .grid .code {width: 4rem;}
+.form .grid .name {width: 16rem;}
+.form .grid .icon {width: 4rem;}
+
+.form .grid .inout {width: 4rem;}
+.form .grid .fund_name {width: 12rem;}
+
+.form .grid .date {width: 5rem;}
+.form .grid .genre_name {width: 12rem;}
+.form .grid .income {width: 5rem;}
+.form .grid .outgo {width: 5rem;}
+.form .grid .fund_name {width: 8rem;}
+
+.form .grid .name {width: 16rem;}
+.form .grid .password {width: 8rem;}
+.form .grid .level {width: 4rem;}
+
 
 /* Footer */
 
@@ -360,17 +430,4 @@ footer {
   font-size: 0.9rem;
   text-align: center;
   color: var(--color-dark);
-}
-
-/* Login */
-.login {
-  border: 1px solid red;
-  padding: 40 10;
-  margin: auto;
-}
-.login * {
-  display: inline-block;
-}
-.login a {
-  border: 1px solid #268e70;
 }

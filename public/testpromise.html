@@ -1,0 +1,64 @@
+<!DOCTYPE=html>
+<html>
+<head>
+</head>
+<body>
+  <h3>Testing Promises</h3>
+  <p class="test">Added from html</p>
+  <span style="display: inline-block">A col<p>a row</p><p>b row</p></span><span style="display: inline-block">B col<p>a row</p><p>b row</p></span>
+
+  <script type="text/javascript">
+    function test() {
+      new Promise((resolve, reject)=> {
+        document.querySelector('.test').innerHTML+=`<ul><li>Added from js :0</li></ul>`;
+        setTimeout(()=> {resolve(1)}, 1000);
+      })
+      .then((result)=> {
+        return new Promise((resolve, reject)=> {
+          document.querySelector('.test').innerHTML+=`<ul><li>Added from js :${result}</li></ul>`;
+          setTimeout(()=> {resolve(2)}, 2000);
+        });
+      })
+      .then((result)=> {
+        document.querySelector('.test').innerHTML+=`<ul><li>Added from js :${result}</li></ul>`;
+      });
+    }
+
+    function test2() {
+      let result=0;
+      new Promise((resolve, reject)=> {
+        console.log(result);
+        resolve(++result);
+      })
+      .then(result=> {
+        console.log(result);
+        result=result*10;
+        return new Promise((resolve, reject)=> {
+          console.log(result);
+          throw 'err';
+          resolve(++result);
+        })
+        .then(result=> {
+          console.log(result);
+          return ++result;
+        })
+        .catch(error=> {
+          console.log('error B');
+          reject(error);
+        });
+      })
+      .then(result=> {
+        console.log(result);
+        return ++result;
+      })
+      .catch(error=> {
+        console.log('error A');
+      });
+
+    }
+
+    window.onload=test2;
+
+  </script>
+</body>
+</html>

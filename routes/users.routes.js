@@ -4,11 +4,13 @@ var g=require('../config/globals.js');
 var router=require('express').Router();
 var ctrl=require('../ctrls/users.ctrl');
 
-router.get('/', g.login, ctrl.form);
-router.post('/signup', ctrl.create);
-router.post('/:id/modify', ctrl.modify);
-router.post('/:id/delete', ctrl.delete);
-router.post('/view', ctrl.view);
-router.post('/list', ctrl.list);
-router.post('/signin', ctrl.signin);
+router.get('/form', g.login, ctrl.form);
+router.post('/new', g.login, g.noGuest, ctrl.new);
+router.post('/modify', g.login, g.noGuest, ctrl.modify);
+router.post('/delete', g.login, g.noGuest, ctrl.delete);
+router.post('/find', g.login, ctrl.find);
+router.post('/icon', g.login, ctrl.icon);
+router.post('/count', g.login, ctrl.count);
+router.post('/login', ctrl.login);
+
 module.exports=router;

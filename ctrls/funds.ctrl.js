@@ -1,7 +1,7 @@
 //funds.ctrl.js
 
 const g=require('../config/globals.js');
-const table=require('../config/dbtable.js');
+const table=require(`../config/dbtable_${g.dbConfig}.js`);
 
 exports.form=function (req, res) {
   res.render('funds.ejs'); //,{username: req.session.user.name});
@@ -20,7 +20,7 @@ exports.delete=function (req, res) {
 }
 
 exports.find=function (req, res) {
-  table.find('funds', 'id, code, name, CASE WHEN icon LIKE "%" THEN "..." ELSE "" END icon', req, res);
+  table.find('funds', `id, code, name, CASE WHEN icon LIKE '%' THEN '...' ELSE '' END icon`, req, res);
 }
 
 exports.count=function (req, res) {

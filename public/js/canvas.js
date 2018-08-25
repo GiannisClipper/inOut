@@ -52,7 +52,7 @@ class IconCanvas extends Canvas {
     super();
     this.codeHTML=`<!--
    --><span class="canvas"><!--
-     --><canvas class="icon _ _new _modify _request" width="125" height="125"></canvas><!--
+     --><canvas class="icon _ _new _modify _request" width="150" height="150"></canvas><!--
      --><div class="tools"><!--
        --><input type="file" class="file _ _new _modify _tmp" accept=".jpg, .jpeg, .png, .gif, .bmp" hidden><!--
        --><input type="button" class="button _ _new _modify _tmp" value="εισαγωγή από αρχείο"><!--

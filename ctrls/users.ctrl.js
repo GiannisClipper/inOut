@@ -1,56 +1,49 @@
 //users.ctrl.js
 
-var path=require("path");
-var g=require('../config/globals.js');
+const g=require('../config/globals.js');
+const table=require(`../config/dbtable_${g.dbConfig}.js`);
 
 exports.form=function (req, res) {
-  res.render('users.ejs',{username: req.session.user.name});
+  res.render('users.ejs'); //,{username: req.session.user.name});
 }
 
-exports.create=function (req, res) {
-  g.db.run(`INSERT INTO users (name, password) VALUES (?,?)`, req.body.name, req.body.password, function(err) {
-    if (err) return (g.echo(res, err.message),false);
-    g.echo(res, "Insert operation completed "+req.body.name);
-  });
+exports.new=function (req, res) {
+  table.new('users', req, res);
 }
 
 exports.modify=function (req, res) {
-  g.db.run(`UPDATE users SET name=?, password=? WHERE name=?`, req.body.name, req.body.password, req.params.id, function(err) {
-    if (err) return (g.echo(res, err.message),false);
-    g.echo(res, "Update operation completed "+req.params.id);
-  });
+  table.modify('users', req, res);
 }
 
 exports.delete=function (req, res) {
-  g.db.run(`DELETE FROM users WHERE name=?`, req.params.id, function(err) {
-    if (err) return (g.echo(res, err.message),false);
-    g.echo(res, "Delete operation completed "+req.params.id);
+  table.delete('users', req, res);
+}
+
+exports.find=function (req, res) {
+  table.find('users', `id, name, password, level, CASE WHEN icon LIKE '%' THEN '...' ELSE '' END icon`, req, res);
+}
+
+exports.count=function (req, res) {
+  table.count('users', req, res);
+}
+
+exports.icon=function (req, res) {
+  table.icon('users', req, res);
+}
+
+exports.login=function (req, res) {
+  g.db.query(`SELECT name, level FROM users WHERE name=$1 AND password=$2`, [req.body.name, req.body.password], (err, result)=> {
+    if (result && result.rows.length>0)
+      req.session.user=result.rows[0]; //sets a cookie with the user's info
+    g.echo(err, res, (!result || result.rows.length===0)?'No user match':result.rows);
   });
 }
 
-exports.view=function (req, res) {
-  g.db.get(`SELECT * FROM users WHERE name=?`, req.body.name, function(err, row) {
-    if (err) return (g.echo(res, err.message),false);
-    g.echo(res,(!row)?"Record not found":row);
-  });
-}
-
-exports.list=function (req, res) {
-  g.db.all(`SELECT * FROM users`, function(err, rows) {
-    if (err) return (g.echo(res, err.message),false);
-    g.echo(res,(rows.length==0)?"No records found":rows);
-  });
-}
-
-exports.signin=function (req, res) {
-  g.db.get(`SELECT * FROM users WHERE name=?`, req.body.name, function(err, record) {
-    if (!record) {
-      res.send('');
-    } else {
-      req.session.user=record; //sets a cookie with the user's info
-      res.render('genres.ejs',{username: req.session.user.name});
-
-    } 
-  });
-
-}
+//  g.db.get(`SELECT * FROM users WHERE name=?`, req.body.name, function(err, record) {
+//    if (!record) {
+//      res.send('');
+//    } else {
+//      req.session.user=record; //sets a cookie with the user's info
+//      res.render('genres.ejs',{username: req.session.user.name});
+//    } 
+//  });

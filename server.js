@@ -16,34 +16,18 @@ g.app.use(function(req, res, next) {
   next();
 });
 
+//middleware for login-authentication
 var session=require('client-sessions');
 g.app.use(session({
   cookieName: 'session',
-  secret: 'random_string_goes_here',
-  duration: 1*60*1000,
-  activeDuration: 1*60*1000,
+  secret: 'random_string_goes_here_better_use_bcrypt',
+  duration: 15*60*1000,
+  activeDuration: 15*60*1000,
 }));
 
-
 g.app.use(function(req, res, next) {
-
-console.log(req.url);
-
-  if (false && req.session && req.session.user) {
-    console.log('checking session and user');
-    g.db.get(`SELECT * FROM users WHERE name=?`, req.session.user.name, function(err, record) {
-      if (record) {
-        req.user=record;
-        delete req.user.password; // delete the password from the session
-        req.session.user=req.user; //refresh the session value
-        res.locals.user=req.user;
-      }
-      // finishing processing the middleware and run the route
-      next();
-    });
-  } else {
-    next();
-  }
+  console.log(req.url);
+  next();
 });
 
 console.log("Greetings from inOut application");
@@ -66,13 +50,12 @@ g.app.use('/funds', funds);
 var trans=require('./routes/trans.routes.js');
 g.app.use('/trans', trans);
 
-g.app.use('/', function (req, res) {res.render('home.ejs');});
-//g.app.use('/app', function (req, res) {res.render('index.ejs');});
+g.app.use('/', function (req, res) {g.logout(req, res); res.render('index.ejs');});
 
 new Promise(async (resolve, reject)=>{
-  console.log("Connecting to database...");
-  let tmp=await require('./config/db.js').setup();
-  console.log(g.db);
+  console.log(`Connecting to database (${g.dbConfig})...`);
+  let tmp=await require(`./config/db_${g.dbConfig}.js`).setup();
+  //console.log(g.db);
   resolve();
 })
 .then(result=>{

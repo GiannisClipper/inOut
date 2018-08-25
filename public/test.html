@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+  .left, .right {
+    display: inline-block;
+    vertical-align: top;
+  }
+  .left span, .right span{
+    display: block;
+  }
+
+  .test {
+    border: 1px solid black;
+    width: 400px;
+    height: 266px;
+    background-color: orange;
+
+  }
+  .test._2 {
+    border: 1px dashed green;
+    position: relative;
+    bottom: -90px;
+    left: 90px;
+    background-color: green;
+  }
+  </style>
+</head>
+<body>
+  <div style="height: 190px"></div>
+  <div class="left"><span>L1</span><span>L2</span><span>L3</span></div>
+  <div class="right"><span>R1</span><span>R2</span></div>
+  <div class='test _1'><div class='test _2'></div></div>
+  <div class='test _3'></div>
+  <script type="text/javascript">
+    function test() {
+      console.log('11- 12.6/ 2018'.match(/[0-9]+/g));
+    }
+    window.onload=test();
+  </script>
+</body>
+</html>

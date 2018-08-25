@@ -109,6 +109,7 @@ class Form {
 
   clearElem(elm) {
     elm.tagName==='INPUT' && elm.type==='text'?elm.value='':
+    elm.tagName==='INPUT' && elm.type==='password'?elm.value='':
     elm.tagName==='SELECT'?elm.value='':
     elm.tagName==='DIV'?elm.innerHTML='':
     elm.tagName==='P'?elm.innerHTML='':
@@ -128,6 +129,7 @@ class Form {
     elm.parentObject && elm.parentObject.constructor.name==='DateInput'?elm.parentObject.raw=value:
 //    elm.parentObject && elm.parentObject.constructor.name==='FloatInput'?(value?elm.value=parseFloat(value).toFixed(elm.parentObject.decimals):value):
     elm.tagName==='INPUT' && elm.type==='text'?elm.value=value:
+    elm.tagName==='INPUT' && elm.type==='password'?elm.value=value:
     elm.tagName==='SELECT'?elm.value=value:
     elm.tagName==='DIV'?elm.innerHTML=value:
     elm.tagName==='P'?elm.innerHTML=value:
@@ -381,6 +383,7 @@ console.log('fillGrid offset:'+this.offset+'/ index:'+(this.iView+1));
     elm.parentObject && elm.parentObject.constructor.name==='DateInput'?retval=elm.parentObject.rawFrom+(elm.parentObject.rawTill?elm.parentObject.seperateDates+elm.parentObject.rawTill:''):
     elm.parentObject && elm.parentObject.constructor.name==='FloatInput'?retval=elm.parentObject.from()+(elm.parentObject.till()?elm.parentObject.seperateFloats+elm.parentObject.till():''):
     elm.tagName==='INPUT' && elm.type==='text'?retval=elm.value:
+    elm.tagName==='INPUT' && elm.type==='password'?retval=elm.value:
     elm.tagName==='SELECT'?retval=elm.value:
     elm.tagName==='DIV'?retval=elm.innerHTML:
     elm.tagName==='P'?retval=elm.innerHTML:
@@ -422,7 +425,8 @@ console.log('fillGrid offset:'+this.offset+'/ index:'+(this.iView+1));
     this.elmRecord.querySelectorAll('._request').forEach(x=> fields.push(x.className.split(' ')[0]));
     this.elmRecord.querySelectorAll('._').forEach(x=> fieldsAll.push(x.className.split(' ')[0]));
     let data={id:this.elmRecord.querySelector('.id').value, rawData:fields.map(x=> ({name:x, value:this.readElem(this.elmRecord.querySelector(`.${x}`))}))};
-    this.req(this.url.modify, data, ()=> {
+    this.req(this.url.modify, data, (result)=> {
+      if (result.error) throw result;
       fieldsAll.forEach(x=> this.cache[this.iView-this.offset][x]=this.readElem(this.elmRecord.querySelector(`.${x}`)));
       callback?callback():null;
     });
@@ -430,7 +434,8 @@ console.log('fillGrid offset:'+this.offset+'/ index:'+(this.iView+1));
 
   reqDelete() {
     let data={id:this.elmRecord.querySelector('.id').value};
-    this.req(this.url.delete, data, ()=> {
+    this.req(this.url.delete, data, (result)=> {
+      if (result.error) throw result;
       this.cache.splice(this.iView-this.offset, 1);
       this.viewLength--;
       this.iView=Math.min(this.iView, this.viewLength-1);
