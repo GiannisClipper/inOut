@@ -10,11 +10,11 @@ g.app.use(bodyParser.urlencoded({ extended: true })); //false?
 g.app.use(bodyParser.json());
 
 //options to enable cross origin requests
-g.app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
+//g.app.use(function(req, res, next) {
+//  res.header("Access-Control-Allow-Origin", "*");
+//  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//  next();
+//});
 
 //middleware for login-authentication
 var session=require('client-sessions');
