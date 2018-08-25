@@ -5,7 +5,8 @@ exports.setup=async function() {
   const g=require('../config/globals.js');
   const {Pool}=require('pg');
   const connectionString='postgresql://postgres:postgres@localhost:5432/'+g.dbName; //postgresql://username:password@host:port/database_name';
-  g.db=new Pool({connectionString: connectionString});
+//  g.db=new Pool({connectionString: connectionString}); //local pg
+  g.db=new Pool({connectionString: process.env.DATABASE_URL, ssl: true}); //heroku pg
 
   const tables=[{
   name: 'users',
