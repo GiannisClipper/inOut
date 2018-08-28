@@ -1,0 +1,125 @@
+﻿<!DOCTYPE=html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <% var page='admin'; %>
+  <% include ./parts/head.ejs %>
+
+  <!--τα paths ορίζονται ως προς το /public-->
+  <script type="text/javascript" src="/js/client.js" async></script>
+
+  <style>
+    .card .row input {
+      background-color: var(--color-light);
+      width: 10rem;
+      height: 2rem;
+      margin: 0.25rem;
+      cursor: pointer;
+    }
+    .card .row input:hover {
+      background-color: var(--color-dark);
+    }
+    .card .row input:focus {
+      background-color: var(--color-dark);
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <% include ./parts/header.ejs %>
+  </header>
+
+  <section>
+    <div class="container">
+      <div class="card">
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <% include ./parts/footer.ejs %>
+  </footer>
+  
+  <script type="text/javascript">
+    function init() {
+      const tables=['users','funds','genres','trans'];
+
+      document.querySelector('.card').innerHTML=tables.map(x=> `
+        <div class='row'>
+          <input type="button" class="${x} table" value="table: ${x}">
+          <input type="button" class="${x} dropcreate" value="Διαγραφή/Δημιουργία">
+          <input type="button" class="${x} importdata" value="Εισαγωγή δεδομένων">
+          <input type="button" class="${x} exportdata" value="Εξαγωγή δεδομένων">
+        </div>
+      `).join('');
+
+      document.querySelectorAll('.row').forEach(x=> x.querySelectorAll('input').forEach((y,i)=> {
+        y.disabled=(i===0)?false:true;
+        y.onclick=
+        (i==0)?()=> document.querySelectorAll('.row').forEach((x,i)=> (x===y.parentElement)?
+                    x.querySelectorAll('input').forEach((x,i)=> x.disabled=(i===0)?false:!x.disabled):
+                    x.querySelectorAll('input').forEach((x,i)=> x.disabled=(i===0)?false:true)):
+        (i==1)?clickDropCreate:
+        (i==2)?clickImportData:
+        (i==3)?clickExportData:null;
+      }));
+    }
+
+    function clickDropCreate(e) {
+      document.querySelector('.card').disabled=true;
+      req('/admin/dropcreate', {table: e.target.className.split(' ')[0]}, result=> (result.msg?alert(result.msg):null));
+      document.querySelector('.card').disabled=false;
+    }
+
+    function clickImportData(e) {
+      document.querySelector('.card').disabled=true;
+      readFile(result=> req('/admin/importdata', JSON.parse(result), backResult=> (backResult.msg?alert(backResult.msg):null)));
+      document.querySelector('.card').disabled=false;
+    }
+
+    function clickExportData(e) {
+      document.querySelector('.card').disabled=true;
+      req('/admin/exportdata', {table: e.target.className.split(' ')[0]}, result=> saveFile('',JSON.stringify(result)));
+      document.querySelector('.card').disabled=false;
+    }
+
+    function req(url, data, callback) {
+      document.querySelectorAll('.row').forEach(x=> x.disabled=true);
+      request(url, data)
+      .then(result=> callback?callback(result):null)
+      .catch(error=> alert((error.error)?error.error:error))
+      .finally(()=> document.querySelectorAll('.row').forEach(x=> x.disabled=false));
+    }
+
+    function saveFile(name, data) {
+      let _=document.createElement('a');
+      _.setAttribute('href', 'data:text/plain;charset=utf-8,'+encodeURIComponent(data));
+      _.setAttribute('target', '_blank'); //_.setAttribute('download', name);
+      _.style.display='none';
+      document.body.appendChild(_);
+      _.click();
+      document.body.removeChild(_);
+    }
+
+    function readFile(callback) {
+      let retval='';
+      let _=document.createElement('input');
+      _.setAttribute('type', 'file');
+      _.style.display='none';
+      document.body.appendChild(_);
+      _.click();
+      _.onchange=async (e)=> {
+        let file=e.target.files[0];
+        let reader=new FileReader();
+        reader.onload=e=> callback(e.target.result);            
+        await reader.readAsText(file);
+        document.body.removeChild(_);
+      }
+      return retval;
+    }
+ 
+    window.onload=()=> init();
+  </script>
+</body>
+</html>

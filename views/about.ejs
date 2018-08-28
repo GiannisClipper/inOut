@@ -1,0 +1,70 @@
+﻿<!DOCTYPE=html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <% var page='about'; %>
+  <% include ./parts/head.ejs %>
+
+  <style>
+    .card {
+      width: 80%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .card a {
+      color: var(--color-light);
+    }
+    .card div {
+      margin: 1em;
+      text-align: left;
+    }
+    .card div p:before {
+      content: "";
+      display: inline-block;
+      width: 1.5em;
+    }
+
+    .card div p:nth-child(1) {
+      text-align: left;
+    }
+    .card div p:nth-child(2) {
+      width: 75%;
+      height: 1em;
+      border-bottom: 1px solid var(--color-light);
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <% include ./parts/header.ejs %>
+  </header>
+
+  <section>
+    <div class="container">
+      <div class="card">
+        <div>
+          <p>Κίνητρο αυτής της εργασίας υπήρξε η διερεύνηση, η μελέτη και ο συνδυασμός τεχνολογιών για την υλοποίηση διαδικτυακών εφαρμογών και δυναμικών ιστοσελίδων.</p>
+          <p></p>
+        </div>
+        <div>
+          <p>Πρόκειται για μια εφαρμογή διαχείρισης ενός απλού ταμείου, όπου μπορούν να καταχωρίζονται κινήσεις εσόδων ή εξόδων και να ομαδοποιούνται σε επιμέρους κατηγορίες αλλά και λογαριασμούς. Επίσης μέσω της δημιουργίας μιας δυναμικής ιστοσελίδας παρέχονται πληροφορίες και στατιστικά για το ταμείο για κάθε δοσμένο χρονικό διάστημα.</p>
+          <p></p>
+        </div>
+        <div>
+          <p>Ως προς το front-end, η δομή και η εμφάνιση της εφαρμογής υλοποιήθηκε με HTML/CSS και η λειτουργικότητά της με JS (με προτίμηση στις δυνατότητες και τις μορφές σύνταξης των πιο πρόσφατων εκδόσεών της). Στο back-end χρησιμοποιήθηκε επίσης κώδικας JS και το περιβάλλον ανάπτυξης server εφαρμογών Node.js/EXPRESS, ενώ ως βάση δεδομένων χρησιμοποιήθηκε η postgreSQL.</p>
+          <p></p>
+        </div>
+        <div>
+          <p>Η εφαρμογή <a href='https://gc-inout.herokuapp.com/'>παρουσιάζεται σε λειτουργία εγκατεστημένη στο Heroku.com</a> με έναν αριθμό πλασματικών-ενδεικτικών δεδομένων, ενώ <a href='https://github.com/GiannisClipper/inOut'>ο κώδικάς της είναι προσβάσιμος στο GitHub.com</a>. Για παρατηρήσεις και επικοινωνία υπάρχει το e-mail: strunstrun@gmail.com.</p>
+          <p></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <% include ./parts/footer.ejs %>
+  </footer>
+</body>
+</html>

@@ -18,9 +18,18 @@ function request(url='', data={}) {
       const errors=localVerify(url, data);
       (errors===null)?resolve():reject(errors);
     }) 
-    .then(()=> fetch(url, initFetch(data)))  //.then(()=> fetch('http://localhost:3000'+url, initFetch(data)))
+    .then(()=> fetch(url, initFetch(data)))
     .then(response=> response.json());
-};
+}
+
+function requestText(url='', data={}) {
+  return new Promise((resolve, reject)=> {
+      const errors=localVerify(url, data);
+      (errors===null)?resolve():reject(errors);
+    }) 
+    .then(()=> fetch(url, initFetch(data)))
+    .then(response=> response.text());
+}
 
 function localVerify(url, data) {
   let fields=[];
@@ -33,4 +42,4 @@ function localVerify(url, data) {
     if (data[x]==='') errors.push(x+' is empty');
 
   return (errors.length>1)?errors:null;
-};
+}

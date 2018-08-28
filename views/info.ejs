@@ -1,0 +1,50 @@
+﻿<!DOCTYPE=html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <% var page='info'; %>
+  <% include ./parts/head.ejs %>
+
+  <!--τα paths ορίζονται ως προς το /public-->
+  <script type="text/javascript" src="/js/client.js" async></script> 
+</head>
+
+<body>
+  <header>
+    <% include ./parts/header.ejs %>
+  </header>
+
+  <section>
+    <div class="container">
+      <div class="card">
+        <div>Χρονικό διάστημα</div>
+        <div><input type="text" class="date"></div>
+        <input type="button" value="Επεξεργασία">
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <% include ./parts/footer.ejs %>
+  </footer>
+  
+  <script type="text/javascript">
+    function process() {
+      requestText('/info/data', {date: document.querySelector('.card .date').value})
+      .then(data=> {
+        if (!data) throw data;
+        document.open();
+        document.write(data);
+        document.close();
+      })
+      .catch(error=> alert((error.error)?error.error:error));
+    }
+
+    function init() {
+      document.querySelector('input[type="button"]').onclick=process;
+    }
+ 
+    window.onload=()=> init();
+  </script>
+</body>
+</html>

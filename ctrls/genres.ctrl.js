@@ -1,10 +1,10 @@
 //genres.ctrl.js
 
 const g=require('../config/globals.js');
-const table=require(`../config/dbtable_${g.dbConfig}.js`);
+const table=require(`../config/${g.dbCommFile}.js`);
 
 exports.form=function (req, res) {
-  res.render('genres.ejs'); //,{username: req.session.user.name});
+  res.render('genres.ejs', {username: req.session.user.name});
 }
 
 exports.new=function (req, res) {

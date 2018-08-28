@@ -20,17 +20,10 @@ g.app.use(bodyParser.json());
 var session=require('client-sessions');
 g.app.use(session({
   cookieName: 'session',
-  secret: 'random_string_goes_here_better_use_bcrypt',
+  secret: 'random_string_goes_here_and_is_better_to_use_bcrypt',
   duration: 15*60*1000,
   activeDuration: 15*60*1000,
 }));
-
-g.app.use(function(req, res, next) {
-  console.log(req.url);
-  next();
-});
-
-console.log("Greetings from inOut application");
 
 g.app.engine('html', require('ejs').renderFile);
 g.app.set('view engine', 'html');
@@ -38,8 +31,15 @@ g.app.set('view engine', 'html');
 var path=require("path");
 g.app.use(express.static(__dirname+'/public'));
 
-var users=require('./routes/users.routes.js');
-g.app.use('/users', users);
+
+console.log("Greetings from inOut application");
+g.app.use((req, res, next)=> {console.log(req.url); next();});
+
+var info=require('./routes/info.routes.js');
+g.app.use('/info', info);
+
+var trans=require('./routes/trans.routes.js');
+g.app.use('/trans', trans);
 
 var genres=require('./routes/genres.routes.js');
 g.app.use('/genres', genres);
@@ -47,14 +47,16 @@ g.app.use('/genres', genres);
 var funds=require('./routes/funds.routes.js');
 g.app.use('/funds', funds);
 
-var trans=require('./routes/trans.routes.js');
-g.app.use('/trans', trans);
+var users=require('./routes/users.routes.js');
+g.app.use('/users', users);
 
-g.app.use('/', function (req, res) {g.logout(req, res); res.render('index.ejs');});
+var etc=require('./routes/etc.routes.js');
+g.app.use('/', etc);
+
 
 new Promise(async (resolve, reject)=>{
-  console.log(`Connecting to database (${g.dbConfig})...`);
-  let tmp=await require(`./config/db_${g.dbConfig}.js`).setup();
+  console.log(`Connecting to database...`);
+  let tmp=await require(`./config/${g.dbConfigFile}.js`).setup();
   //console.log(g.db);
   resolve();
 })

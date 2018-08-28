@@ -2,9 +2,11 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <% var page='home'; %>
+  <% var page='index'; %>
   <% include ./parts/head.ejs %>
+
   <!--τα paths ορίζονται ως προς το /public-->
+  <script type="text/javascript" src="/js/client.js" async></script> 
   <script type="text/javascript" src="/js/lib.js"></script>
 </head>
 
@@ -32,9 +34,10 @@
   <script type="text/javascript">
     function login() {
       request('/users/login', {name: document.querySelector('.login .name').value, password: document.querySelector('.login .password').value})
-      .then(data=> {
-        if (data.error) throw data;
+      .then(result=> {
+        if (result.error) throw result;
         removeClass(document.querySelector('header nav'), 'login');
+        document.querySelector('footer nav .right').innerHTML=document.querySelector('.login .name').value;
         document.querySelector('section').innerHTML='';
       })
       .catch(error=> alert((error.error)?error.error:error));
