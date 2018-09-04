@@ -12,20 +12,20 @@ class TransForm extends Form {
       <div class="record">
         <div class="left">
           <div>ID</div><div><input type="text" class="id _"></div>
-          <div>Ημ/νία</div><div><input type="text" class="date _ _find _new _modify _request"></div>
+          <div>Ημ/νία</div><div><input type="text" class="date _ _find _new _modify _first _request"></div>
         </div>
         <div class="right">
-          <div>Κατηγορία[]</div><div>${this.genreCard.codeHTML}</div>
+          <div>Κατηγορία</div><div>${this.genreCard.codeHTML}</div>
           <div>Έσοδα</div><div><input type="text" class="income _ _find _new _modify _request"></div>
           <div>Έξοδα</div><div><input type="text" class="outgo _ _find _new _modify _request"></div>
-          <div>Λογαριασμός[]</div><div>${this.fundCard.codeHTML}</div>
+          <div>Λογαριασμός</div><div>${this.fundCard.codeHTML}</div>
           <div>Παρατηρήσεις</div><div><input type="text" class="remarks _ _find _new _modify _request"></div>
         </div>
       </div>
     `;
     this.gridHeaderHTML=`
       <div class="titles">
-        <span class="id">ID</span><span class="date">Ημ/νία</span><span class="genre_name">Κατηγορία[]</span><span class="income">Έσοδα</span><span class="outgo">Έξοδα</span><span class="fund_name">Λογαριασμός[]</span><span class="remarks">Παρατηρήσεις</span>
+        <span class="id">ID</span><span class="date">Ημ/νία</span><span class="genre_name">Κατηγορία</span><span class="income">Έσοδα</span><span class="outgo">Έξοδα</span><span class="fund_name">Λογαριασμός</span><span class="remarks">Παρατηρήσεις</span>
       </div>
     `;
     this.dateGrid=Array(this.gridLength).fill().map(x=> x=new DateInput());
@@ -36,7 +36,7 @@ class TransForm extends Form {
     this.gridRowHTML=`
       <div class="record">
         <input type="text" class="id _"><!--
-     --><input type="text" class="date _ _find _new _modify _request"><!--
+     --><input type="text" class="date _ _find _new _modify _first _request"><!--
      -->${this.genreCard.codeHTML}<!--
      --><input type="text" class="income _ _find _new _modify _request"><!--
      --><input type="text" class="outgo _ _find _new _modify _request"><!--
@@ -45,11 +45,13 @@ class TransForm extends Form {
       </div>
     `;
 
-    this.orderHTML=`
+    this.order.HTML+=`
       <option value="date">ΗΜ/ΝΙΑ</option>
       <option value="genre_id">ΚΑΤΗΓΟΡΙΑ</option>
       <option value="fund_id">ΛΟΓΑΡΙΑΣΜΟ</option>
     `;
+    this.order.field='date';
+    this.order.asc_desc='DESC';
 
     this.join=[
       {table:'genres', relation:'trans.genre_id=genres.id', fields:[{name:'name', alias:'genre_name'}]},
@@ -95,11 +97,13 @@ class TransForm extends Form {
     this.dateCard.input=this.elmCard.querySelector('.date');
     this.elmGrid.querySelectorAll('.record').forEach((x,i)=> this.dateGrid[i].input=x.querySelector('.date'));
     this.incomeCard.input=this.elmCard.querySelector('.income');
+    this.incomeCard.align='left';
     this.elmGrid.querySelectorAll('.record').forEach((x,i)=> this.incomeGrid[i].input=x.querySelector('.income'));
     this.outgoCard.input=this.elmCard.querySelector('.outgo');
+    this.outgoCard.align='left';
     this.elmGrid.querySelectorAll('.record').forEach((x,i)=> this.outgoGrid[i].input=x.querySelector('.outgo'));
 
-    this.genreCard.init(this.elmCard.querySelector('.record'), ()=> {this.genre_onSelect();});
+    this.genreCard.init(this.elmCard.querySelector('.record'), ()=> this.genre_onSelect());
     this.elmGrid.querySelectorAll('.record').forEach((x,i)=> this.genreGrid[i].init(x, ()=> {this.genre_onSelect();}));
     this.fundCard.init(this.elmCard.querySelector('.record'));
     this.elmGrid.querySelectorAll('.record').forEach((x,i)=> this.fundGrid[i].init(x));

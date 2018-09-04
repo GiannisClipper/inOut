@@ -1,4 +1,4 @@
-//client.js
+﻿//client.js
 
 function initFetch(data) {
   return {
@@ -13,33 +13,32 @@ function initFetch(data) {
   }
 };
 
-function request(url='', data={}) {
+function request(url='', data={}, resType=null) {
+  let loader=openLoader();
   return new Promise((resolve, reject)=> {
-      const errors=localVerify(url, data);
+      const errors=clientValidate(url, data);
       (errors===null)?resolve():reject(errors);
     }) 
     .then(()=> fetch(url, initFetch(data)))
-    .then(response=> response.json());
+    .then(response=> (resType==='text')?response.text():response.json())
+    .finally(()=> closeLoader(loader));
 }
 
-function requestText(url='', data={}) {
-  return new Promise((resolve, reject)=> {
-      const errors=localVerify(url, data);
-      (errors===null)?resolve():reject(errors);
-    }) 
-    .then(()=> fetch(url, initFetch(data)))
-    .then(response=> response.text());
-}
-
-function localVerify(url, data) {
+function clientValidate(url, data) {
   let fields=[];
-  (url==='/genres/new')?fields.push('code', 'name'):  
-  (url==='/genres/modify')?fields.push('id', 'code', 'name'):  
-  (url==='/genres/delete')?fields.push('id'):null;  
+  (url==='/users/new')?fields.push('name', 'password', 'level'):  
+  (url==='/users/modify')?fields.push('name', 'password', 'level'):
 
-  let errors=['Error(s) found'];
-  for (let x of fields)
-    if (data[x]==='') errors.push(x+' is empty');
+  (url==='/funds/new')?fields.push('code', 'name'):  
+  (url==='/funds/modify')?fields.push('code', 'name'):  
 
-  return (errors.length>1)?errors:null;
+  (url==='/genres/new')?fields.push('code', 'name', 'inout'):  
+  (url==='/genres/modify')?fields.push('code', 'name', 'inout'):   
+
+  (url==='/trans/new')?fields.push('date', 'genre_id', 'fund_id'):  
+  (url==='/trans/modify')?fields.push('date', 'genre_id', 'fund_id'):null;
+
+  let labels={code:'Κωδικός', name:'Όνομα', password:'Κωδ. εισόδου', level:'Επίπεδο', date:'Ημ/νία', genre_id:'Κατηγορία', fund_id:'Λογαριασμός', inout:'Εσοδα/Εξοδα'};
+  let errors=fields.filter(x=> data.rawData.filter(y=> y.name===x && y.value).length===0).map(x=> labels[x]?labels[x]:x);
+  return (errors.length>0)?'Χρειάζεται να συμπληρωθούν τιμές: '+errors.join(', '):null;
 }

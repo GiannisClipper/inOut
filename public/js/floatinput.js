@@ -7,6 +7,7 @@ class FloatInput {
     this.seperateFloats='~';
     this.decimals=2;
     this.range={from: 0, till: 0};
+    this.align='right';
     if (passval) this.input=passval;
     this.splitedVal=null;
   }
@@ -23,10 +24,12 @@ class FloatInput {
   }
  
   onFocus(e) {
+    this.input.style.textAlign='left';
     this.input._value=e.target.value;
   }
 
   onBlur(e) {
+    this.input.style.textAlign=this.input.align;
     if (!this.valid()) e.target.value=this.input._value;
     this.splitedVal=null;
   }

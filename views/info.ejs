@@ -7,6 +7,8 @@
 
   <!--τα paths ορίζονται ως προς το /public-->
   <script type="text/javascript" src="/js/client.js" async></script> 
+  <script type="text/javascript" src="/js/dateinput.js"></script>
+  <script type="text/javascript" src="/js/lib.js"></script>
 </head>
 
 <body>
@@ -14,34 +16,39 @@
     <% include ./parts/header.ejs %>
   </header>
 
-  <section>
+  <main class="info">
     <div class="container">
-      <div class="card">
+      <div class="info">
         <div>Χρονικό διάστημα</div>
-        <div><input type="text" class="date"></div>
-        <input type="button" value="Επεξεργασία">
+        <div><input type="text" class="period"></div>
+        <input type="button" class="process" value="Επεξεργασία">
       </div>
     </div>
-  </section>
+  </main>
 
   <footer>
     <% include ./parts/footer.ejs %>
   </footer>
   
   <script type="text/javascript">
-    function process() {
-      requestText('/info/data', {date: document.querySelector('.card .date').value})
+    function process(period) {
+      let loader=openLoader();
+      request('/info/data', {username:document.querySelector('footer nav .right').innerHTML, from: period.from(), till: period.till()}, 'text')
       .then(data=> {
         if (!data) throw data;
         document.open();
         document.write(data);
         document.close();
       })
-      .catch(error=> alert((error.error)?error.error:error));
+      .catch(error=> alert((error.error)?error.error:error))
+      .finally(()=> closeLoader(loader));
     }
 
     function init() {
-      document.querySelector('input[type="button"]').onclick=process;
+      const period=new DateInput();
+      period.input=document.querySelector('.info .period');
+      document.querySelector('.info .process').onclick=()=> process(period);
+      period.input.focus();
     }
  
     window.onload=()=> init();

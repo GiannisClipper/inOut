@@ -11,7 +11,7 @@ class UsersForm extends Form {
         </div>
         <div class="right">
           <div>ID</div><div><input type="text" class="id _" readonly></div>
-          <div>Όνομα</div><div><input type="text" class="name _ _find _new _modify _request"></div>
+          <div>Όνομα</div><div><input type="text" class="name _ _find _new _modify _first _request"></div>
           <div>Κωδικός εισόδου</div><div><input type="password" class="password _ _new _modify _request"></div>
           <div>Επανάληξη κωδικού</div><div><input type="password" class="password _ _new _modify"></div>
           <div>Επίπεδο</div><div><select class="level _ _new _modify _request"><option value="admin">ADMIN</option><option value="guest">GUEST</option></select></div>
@@ -26,7 +26,7 @@ class UsersForm extends Form {
     this.gridRowHTML=`
       <div class="record">
         <input type="text" class="id _"><!--
-     --><input type="text" class="name _ _find _new _modify _request"><!--
+     --><input type="text" class="name _ _find _new _modify _first _request"><!--
      --><input type="password" class="password _ _find _new _modify _request"><!--
      --><input type="password" class="password _ _find _new _modify"><!--
      --><select class="level _ _new _modify _request"><option value="admin">ADMIN</option><option value="guest">GUEST</option></select><!--
@@ -34,9 +34,11 @@ class UsersForm extends Form {
       </div>
     `;
 
-    this.orderHTML=`
+    this.order.HTML+=`
       <option value="name">ΟΝΟΜΑ</option>
     `;
+    this.order.field='name';
+    this.order.asc_desc='ASC';
 
     this.find=[
       {name:'name', value:'%'},

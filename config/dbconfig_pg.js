@@ -8,10 +8,10 @@ module.exports.tables=[{
          (id SERIAL PRIMARY KEY,
           name TEXT UNIQUE NOT NULL,
           password TEXT NOT NULL,
-          level TEXT,
+          level TEXT NOT NULL,
           icon TEXT);`,
   index: [`CREATE INDEX usersName ON users (name);`]
-//          `INSERT INTO users (name, password, level) VALUES ('admin', 'admin', 'admin');`]
+
   },{
   name: 'funds',
   stru: `CREATE TABLE IF NOT EXISTS funds
@@ -27,7 +27,7 @@ module.exports.tables=[{
          (id SERIAL PRIMARY KEY,
           code TEXT UNIQUE NOT NULL,
           name TEXT UNIQUE NOT NULL,
-          inout INTEGER,
+          inout INTEGER NOT NULL,
           fund_id INTEGER,
           icon TEXT);`,
   index: [`CREATE INDEX genresCode ON genres (code);`,
@@ -37,10 +37,10 @@ module.exports.tables=[{
   stru: `CREATE TABLE IF NOT EXISTS trans
          (id SERIAL PRIMARY KEY,
           date TEXT NOT NULL,
-          genre_id INTEGER,
+          genre_id INTEGER NOT NULL,
           income REAL,
           outgo REAL,
-          fund_id INTEGER, 
+          fund_id INTEGER NOT NULL, 
           remarks TEXT);`,
   index: [`CREATE INDEX transDate ON trans (date);`,
           `CREATE INDEX transGenre ON trans (genre_id);`,

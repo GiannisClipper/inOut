@@ -2,8 +2,29 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <% var page='info'; %>
+  <link href="/css/infodata.css" rel="stylesheet">
+  <link href="/css/arrows.css" rel="stylesheet">
+
+  <% const page='info'; %>
   <% include ./parts/head.ejs %>
+  <% include ./parts/more.ejs %>
+
+  <!--τα paths ορίζονται ως προς το /public-->
+  <script type="text/javascript" src="/js/lib.js"></script>
+
+  <%
+  const income=funds.map(x=> x.income).reduce((total,x)=> total+x);
+  const outgo=funds.map(x=> x.outgo).reduce((total,x)=> total+x);
+  const balance=income-outgo;
+  const pcent=function(amount, total) {return (amount/total)*100};
+  const shaped=function(amount) {return parseFloat(amount).toFixed(2)};
+  let articles=[];
+  let title='';
+  let className='';
+  let amount='';
+  let percent='';
+  let icon=''; 
+  let alterIcon=''; %>
 </head>
 
 <body>
@@ -11,13 +32,79 @@
     <% include ./parts/header.ejs %>
   </header>
 
-  <section>
+  <main>
     <div class="container">
-    <%= date %>
-    </div>
-  </section>
 
-  <footer>
+  <% till=(!till)?from:till;
+  title=`ΣΥΝΟΛΑ (${from}-${till})`;
+  className='total';
+  articles=[];
+  articles.push({className:'income', title:'ΕΣΟΔΑ', alterIcon:'+', amount:shaped(income), percent:pcent(income, income+outgo).toFixed(0)+'%', more:funds.map(x=> {return {name:x.name, amount:shaped(x.income)}})});
+  articles.push({className:'outgo', title:'ΕΞΟΔΑ', alterIcon:'-', amount:shaped(outgo), percent:pcent(outgo, income+outgo).toFixed(0)+'%', more:funds.map(x=> {return {name:x.name, amount:shaped(x.outgo)}})});
+  articles.push({className:(income>outgo?'income':income<outgo?'outgo':'balance'), title:'ΥΠΟΛΟΙΠΟ', alterIcon:'=', amount:shaped(income-outgo), percent:'', more:funds.map(x=> {return {name:x.name, amount:shaped(x.income-x.outgo)}})}); %>
+  <% include ./parts/section-head.ejs %>
+  <% for (let i=0; i<articles.length; i++) {
+    title=articles[i].title;
+    className=articles[i].className;
+    amount=articles[i].amount;
+    percent=articles[i].percent;
+    alterIcon=articles[i].alterIcon; 
+    more=articles[i].more %>
+    <% include ./parts/article.ejs %>    
+  <% } %>
+  <% include ./parts/section-foot.ejs %>
+
+  <% title=`ΚΑΤΑΝΟΜΗ ΕΣΟΔΩΝ (${shaped(income)} €)`;
+  className='income'; %>
+  <% include ./parts/section-head.ejs %>
+  <% for (genre of genres) {
+    if (genre.inout!==1) continue;
+    title=genre.name;
+    className='income';
+    amount=shaped(genre.more.map(x=> x.amount).reduce((total,x)=> total+x));
+    percent=pcent(amount, income).toFixed(0)+'%';
+    icon=genre.icon;
+    alterIcon=genre.name.substr(0,1);
+    more=genre.more; %>
+    <% include ./parts/article.ejs %>    
+  <% } %>
+  <% include ./parts/section-foot.ejs %>
+
+  <% title=`ΚΑΤΑΝΟΜΗ ΕΞΟΔΩΝ (${shaped(outgo)} €)`;
+  className='outgo'; %>
+  <% include ./parts/section-head.ejs %>
+  <% for (genre of genres) {
+    if (genre.inout!==2) continue;
+    title=genre.name;
+    className='outgo';
+    amount=shaped(genre.more.map(x=> x.amount).reduce((total,x)=> total+x));
+    percent=pcent(amount, income).toFixed(0)+'%';
+    icon=genre.icon;
+    alterIcon=genre.name.substr(0,1);
+    more=genre.more; %>
+    <% include ./parts/article.ejs %>    
+  <% } %>
+  <% include ./parts/section-foot.ejs %>
+
+  <% title=`ΚΑΤΑΝΟΜΗ ΥΠΟΛΟΙΠΟΥ (${shaped(balance)} €)`;
+  className='balance'; %>
+  <% include ./parts/section-head.ejs %>
+  <% for (fund of funds) {
+    title=fund.name;
+    className=(fund.income>fund.outgo)?'income':(fund.income<fund.outgo)?'outgo':'balance';
+    percent=pcent(fund.income-fund.outgo, balance).toFixed(0)+'%';
+    amount=shaped(fund.income-fund.outgo);
+    icon=fund.icon;
+    alterIcon=fund.name.substr(0,1);
+    more=[{name:'ΕΣΟΔΑ', amount:shaped(fund.income)},{name:'ΕΞΟΔΑ', amount:shaped(fund.outgo)}]; %>
+    <% include ./parts/article.ejs %>    
+  <% } %>
+  <% include ./parts/section-foot.ejs %>
+
+    </div>
+  </main>
+
+  <footer class="info">
     <% include ./parts/footer.ejs %>
   </footer>
 </body>

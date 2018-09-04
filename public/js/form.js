@@ -8,7 +8,7 @@ class Form {
     this.gridHeaderHTML='';
     this.gridRowHTML='';
     this.gridFooterHTML='';
-    this.gridLength=8;
+    this.gridLength=10;
 
     this.cardGridVal=true; //select between card & grid screens
     this.screenModeVal=null; //defines available commands & controls
@@ -26,7 +26,11 @@ class Form {
     this.cacheLength=20;
     this.offset=0;
 
-    this.orderHTML='';
+    this.order={
+      HTML:'<option value="id">ID</option>',
+      field:'id',
+      asc_desc:'ASC'
+    }
     this.join=[]; //{table:, relation:, fields: [{name:, alias: }]}
     this.find=[]; //{name:, value:, range:} εδώ αποθηκεύονται οι επιλογές και αποστέλονται όσα πεδία έχουν στις class τη '_request'
     this.url={new:'', modify:'', delete:'', find:'', count:''};
@@ -64,8 +68,7 @@ class Form {
         <div class="order">
           <span>Ταξινόμηση</span><span class='right_arrow'></span>
           <select class="fields">
-            <option value="id">ID</option>
-            ${this.orderHTML}
+            ${this.order.HTML}
           </select> 
           <select class="asc_desc">
             <option value="ASC">ΑΥΞΑΝΟΝΤΑΣ</option>
@@ -100,6 +103,14 @@ class Form {
     this.elmControls.querySelector('.prev').onclick=()=>this.clickPrev();
     this.elmControls.querySelector('.next').onclick=()=>this.clickNext();
     this.elmControls.querySelector('.end').onclick=()=>this.clickEnd();
+    this.elmControls.onkeydown=(e)=> 
+      e.which===37 || e.which==33?this.clickPrev():
+      e.which===39 || e.which==34?this.clickNext():
+      e.which===103?this.clickHome():
+      e.which===97?this.clickEnd():null;
+
+    this.elmControls.querySelector('.order SELECT.fields').value=this.order.field;
+    this.elmControls.querySelector('.order SELECT.asc_desc').value=this.order.asc_desc;
 
     this.cardGrid=true;
 //    this.refresh(); εκτελείται τελευταίο από τις extended classes ώστε να είναι ενημερωμένα όλα τα elements
@@ -127,7 +138,7 @@ class Form {
 
   fillElem(elm, value) {
     elm.parentObject && elm.parentObject.constructor.name==='DateInput'?elm.parentObject.raw=value:
-//    elm.parentObject && elm.parentObject.constructor.name==='FloatInput'?(value?elm.value=parseFloat(value).toFixed(elm.parentObject.decimals):value):
+    elm.parentObject && elm.parentObject.constructor.name==='FloatInput'?(value?elm.value=parseFloat(value).toFixed(elm.parentObject.decimals):value):
     elm.tagName==='INPUT' && elm.type==='text'?elm.value=value:
     elm.tagName==='INPUT' && elm.type==='password'?elm.value=value:
     elm.tagName==='SELECT'?elm.value=value:
@@ -214,10 +225,13 @@ console.log('fillGrid offset:'+this.offset+'/ index:'+(this.iView+1));
     //ορίζονται τα ενεργά ή μη πεδία
     (this.cardGrid?this.elmCard:this.elmGrid).querySelectorAll('.record ._').forEach(x=> x.disabled=true);
     (this.cardGrid?this.elmCard:this.elmGrid).querySelectorAll(`.record${this.cardGrid?'':'.focused'} ._${this.screenMode}`).forEach(x=> x.disabled=false);
+    (this.cardGrid?this.elmCard:this.elmGrid).querySelectorAll(`.record${this.cardGrid?'':'.focused'} ._${this.screenMode}._first`).forEach(x=> x.focus());
 
     //εμφανίζονται ή κρύβονται τα βοηθητικά/προσωρινά πεδία
     (this.cardGrid?this.elmCard:this.elmGrid).querySelectorAll(`.record ._tmp`).forEach(x=> x.style.visibility='hidden');
     (this.cardGrid?this.elmCard:this.elmGrid).querySelectorAll(`.record${this.cardGrid?'':'.focused'} ._${this.screenMode}._tmp`).forEach(x=> x.style.visibility='visible');
+    (this.cardGrid?this.elmCard:this.elmGrid).querySelectorAll(`.record ._relation`).forEach(x=> x.parentObject.closeList());
+    (this.cardGrid?this.elmCard:this.elmGrid).querySelectorAll(`.record${this.cardGrid?'':'.focused'} ._${this.screenMode}._relation`).forEach(x=> x.parentObject.closeList());
   }
 
   get screenMode() {
@@ -230,6 +244,7 @@ console.log('fillGrid offset:'+this.offset+'/ index:'+(this.iView+1));
       this.screenMode=(this.screenMode==='new')?'new':'data'; //ώστε να επιτρέπονται επαναλαμβανόμενες νέες εγγραφές
       (this.cardGrid)?this.fillCard():this.fillGrid();
       this.fillControlsInfo();
+      this.elmControls.querySelector('.next').focus();
     } else {
       this.screenMode='clear';
       this.clearCard();
@@ -401,6 +416,7 @@ console.log('fillGrid offset:'+this.offset+'/ index:'+(this.iView+1));
     .catch(error=> alert((error.error)?error.error:error))
     .finally(()=> { this.elmCommands.querySelectorAll('*').forEach(x=> x.disabled=false);
       this.elmControls.querySelectorAll('*').forEach(x=> x.disabled=false);
+      this.elmControls.querySelector('.info').focus();
     });
   }
 
@@ -409,7 +425,7 @@ console.log('fillGrid offset:'+this.offset+'/ index:'+(this.iView+1));
     let fieldsAll=[]; //όλα τα πεδία ώστε να ενημερωθεί η cache
     this.elmRecord.querySelectorAll('._request').forEach(x=> fields.push(x.className.split(' ')[0]));
     this.elmRecord.querySelectorAll('._').forEach(x=> fieldsAll.push(x.className.split(' ')[0]));
-    let data={rawData:fields.map(x=> ({name:x, value:this.readElem(this.elmRecord.querySelector(`.${x}`))}))};
+    let data={rawData:fields.map(x=> ({name:x, value:this.readElem(this.elmRecord.querySelector(`._request.${x}`))}))};
     this.req(this.url.new, data, (data)=> {
       if (data.error) throw data;
       this.elmRecord.querySelector('input.id').value=data.id;
@@ -424,7 +440,7 @@ console.log('fillGrid offset:'+this.offset+'/ index:'+(this.iView+1));
     let fieldsAll=[]; //όλα τα πεδία ώστε να ενημερωθεί η cache
     this.elmRecord.querySelectorAll('._request').forEach(x=> fields.push(x.className.split(' ')[0]));
     this.elmRecord.querySelectorAll('._').forEach(x=> fieldsAll.push(x.className.split(' ')[0]));
-    let data={id:this.elmRecord.querySelector('.id').value, rawData:fields.map(x=> ({name:x, value:this.readElem(this.elmRecord.querySelector(`.${x}`))}))};
+    let data={id:this.elmRecord.querySelector('.id').value, rawData:fields.map(x=> ({name:x, value:this.readElem(this.elmRecord.querySelector(`._request.${x}`))}))};
     this.req(this.url.modify, data, (result)=> {
       if (result.error) throw result;
       fieldsAll.forEach(x=> this.cache[this.iView-this.offset][x]=this.readElem(this.elmRecord.querySelector(`.${x}`)));

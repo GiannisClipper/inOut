@@ -1,0 +1,42 @@
+﻿<article class="<%= className %>">
+  <div class="basic">
+  <div class="top">
+    <div class="left" onclick="more(this)">
+      <% if (icon) { %>
+        <img src="<%- icon %>">
+      <% } else { %>
+        <span><%- alterIcon %></span>
+      <% } %>
+    </div>
+
+    <div class="right">
+      <div class="percent">  
+        <%= percent %>
+      </div>
+      <div class="amount">  
+        <%= amount+' ' %>&euro;
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom">
+    <div class="title">  
+      <%= title %>
+    </div>
+    <div class="more" onclick="more(this)">
+      <i class="arrow down"></i>
+    </div>
+  </div>
+  </div>
+
+  <div class="more" style="display: none">
+    <% for (row of more) { %>
+      <p>
+      <% for (key in row) { 
+        if (key==='amount') row[key]=shaped(row[key])%>
+        <span class="<%- key %>"><%- row[key] %></span>
+      <% } %>
+      </p>
+    <% } %>
+  </div>
+</article>

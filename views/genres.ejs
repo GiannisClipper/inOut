@@ -20,18 +20,18 @@
     <% include ./parts/header.ejs %>
   </header>
 
-  <section>
+  <main>
     <div class="container">
       Loading...
     </div>
-  </section>
+  </main>
 
   <footer>
     <% include ./parts/footer.ejs %>
   </footer>
  
   <script type="text/javascript">
-    const form=new GenresForm(document.querySelector('SECTION > .container'));
+    const form=new GenresForm(document.querySelector('main > .container'));
     window.onload=()=> form.init();
   </script>
 </body>

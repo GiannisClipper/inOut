@@ -1,0 +1,10 @@
+﻿<script>
+  function more(sender) {
+    let elmArticle=sender.parentElement.parentElement.parentElement;
+    let elmMore=elmArticle.querySelector('article > .more:last-child');
+    elmMore.style.display=(elmMore.style.display==='none')?'block':'none';
+//    elmArticle.querySelector('article .bottom > .more').innerHTML=(elmMore.style.display==='none')?'ΑΝΑΛΥΤΙΚΑ [+]':'ΑΝΑΛΥΤΙΚΑ [-]';
+    replaceClass(elmArticle.querySelector('article .bottom > .more > .arrow'), elmMore.style.display==='none'?'up':'down', elmMore.style.display==='none'?'down':'up');
+//console.log(elmArticle.querySelector('article .bottom > .more > .arrow').className);
+  }
+</script>

@@ -11,6 +11,7 @@
 
 a {
   text-decoration: none;
+  color: #1a2231;
 }
 
 ul {
@@ -55,21 +56,20 @@ html {
 }
 
 :root {
-  --color-main: rgb(255, 255, 179);
-  --color-light: rgb(206, 169, 245);  //rgb(199, 199, 179);
-  --color-dark: rgb(216, 179, 255);  //rgb(204, 204, 189);
-  --color-text-dark: rgb(50, 45, 60);
-  --color-find: rgb(255, 237, 122); 
-  --color-new: rgb(189, 228, 255); 
-  --color-modify: rgb(173, 235, 173); 
-  --color-delete: rgb(255, 183, 173); 
+  --color-body: rgba(0, 48, 88); //#1a2231;
+  --color-light: rgba(160, 170, 160, 1);
+  --color-dark: rgba(140, 150, 140, 1); 
+  --color-find: rgba(240, 240, 160, 1); 
+  --color-new: rgba(110, 210, 250 , 1); 
+  --color-modify: rgba(130, 240, 150, 1); 
+  --color-delete: rgba(250, 140, 140, 1); 
   --color-ok: var(--color-modify); 
   --color-cancel: var(--color-delete);
 }
 
 body {
-  background-color: var(--color-light);
-  color: var(--color-text-dark);
+  background-color: var(--color-body);
+  color: lightgrey;
   line-height: 1.5;
   cursor: default;
 }
@@ -103,7 +103,6 @@ nav a {
   display: inline-block;
   text-align: center;
   background-color: transparent;
-  color: var(--color-main);
   margin: 0 -2px;
   line-height: 9.25;
   vertical-align: middle;
@@ -128,7 +127,7 @@ nav a.logo .letters {
 nav a.logo span {
   width: 1.5rem;
   display: inline-block;
-  border : 1px solid  var(--color-main); //#1a2231;
+  border : 1px solid #1a2231;;
   font-size: 1.66rem;
   text-align: center;
   position: relative;
@@ -163,50 +162,43 @@ main {
   -ms-flex-align: center;
   -webkit-align-items: center;
   -webkit-box-align: center;
-
-  background-color: var(--color-main);
 }
 
 
-/* Login & Info */
+/* Login */
 
-main.login, main.info {
-  background-color: var(--color-light);
-}
-
-main .login, main .info {
+main .login {
   display: inline-block;
   text-align: left;
 }
 
-main .login *, main .info * {
+main .login * {
   display: block;
 }
 
 main .login input[type="text"],
-main .login input[type="password"],
-main .info input[type="text"] {
+main .login input[type="password"] {
   width: 12rem;
   height: 2rem;
   font-size: 0.9rem;
+  color: white;
   background-color: transparent;
-  color: 1px solid var(--color-main);
-  border: 1px solid var(--color-main);
+  border: 1px solid var(--color-light);
   margin-top: 0.5em;
   margin-bottom: 1.5em;
 }
 
-main .login input[type="button"],
-main .info input[type="button"] {
+main .login input[type="button"] {
   width: 12rem;
   height: 2rem;
   font-size: 0.9rem;
-  background-color: var(--color-main);
+  background-color: var(--color-ok);
   cursor: pointer;
   margin-top: 3em;
 }
 
 nav.login a.logo {
+//  width: 50rem;
   border: 0;
 }
 
@@ -214,6 +206,10 @@ nav.login a:not(.logo) {
   display: none;
 }
 
+footer nav.login span.copyright {
+  background-color: transparent;
+  color: var(--color-light);
+}
 
 
 /* Footer */
@@ -225,58 +221,40 @@ footer {
 
 footer nav * {
   display: inline-block;
-  height: 2rem;
+  height: 1.5rem;
   vertical-align: top;
   letter-spacing: 0.05rem;
-  padding-top: 0.5rem;
-  color: var(--color-main);
+  padding-top: 0.1rem;
 }
 
 footer nav span.left,
 footer nav span.right {
   width: 5%;
+  color: var(--color-light);
+  background-color: transparent;
 }
 
 footer nav span.left {
   text-align: right;
-  margin-right: 1rem;
+  margin-right: 0.25rem;
 }
 
 footer nav span.right {
   text-align: left;
-  margin-left: 1rem;
+  margin-left: 0.25rem;
 }
 
 footer nav span.copyright {
   width: 20%;
+  color: black;
+  background-color: var(--color-light);
+  padding-top: 0.1rem;
 }
 
 footer nav a {
   width: 5%;
   line-height: 1.15;
   font-size: 1.1rem;
-  border-left: 1px solid var(--color-dark);
-  border-right: 1px solid var(--color-dark);
-}
-
-
-/* Loader */
-
-body .loader {
-  border: 4rem solid rgba(0,0,0,0.2);
-  border-top: 4rem solid rgba(0,0,0,0.4);
-  border-radius: 50%;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 16rem;
-  height: 16rem;
-  left: calc(50% - 8rem);
-  top: calc(50% - 8rem);
-  animation: spin 1.5s linear infinite;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+//  border-left: 1px solid var(--color-dark);
+  background-color: var(--color-light);
 }

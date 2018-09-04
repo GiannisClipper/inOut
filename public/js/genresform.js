@@ -12,23 +12,23 @@ class GenresForm extends Form {
         </div>
         <div class="right">
           <div>ID</div><div><input type="text" class="id _" readonly></div>
-          <div>Κωδικός</div><div><input type="text" class="code _ _find _new _modify _request"></div>
+          <div>Κωδικός</div><div><input type="text" class="code _ _find _new _modify _first _request"></div>
           <div>Όνομα</div><div><input type="text" class="name _ _find _new _modify _request"></div>
           <div>Έσοδα/Έξοδα</div><div><select class="inout _ _new _modify _request"><option value="1">ΕΣΟΔΑ</option><option value="2">ΕΞΟΔΑ</option></select></div>
-          <div>Λογαριασμός[]</div><div>${this.fundCard.codeHTML}</div>
+          <div>Λογαριασμός</div><div>${this.fundCard.codeHTML}</div>
         </div>
       </div>
     `;
     this.gridHeaderHTML=`
       <div class="titles">
-        <span class="id">ID</span><span class="code">Κωδικός</span><span class="name">Όνομα</span><span class="inout">Έσδ/Έξδ</span><span class="fund_name">Λογαριασμός[]</span><span class="icon">Εικόνα</span>
+        <span class="id">ID</span><span class="code">Κωδικός</span><span class="name">Όνομα</span><span class="inout">Έσδ/Έξδ</span><span class="fund_name">Λογαριασμός</span><span class="icon">Εικόνα</span>
       </div>
     `;
     this.fundGrid=Array(this.gridLength).fill().map(x=> x=new FundRelation());
     this.gridRowHTML=`
       <div class="record">
         <input type="text" class="id _"><!--
-     --><input type="text" class="code _ _find _new _modify _request"><!--
+     --><input type="text" class="code _ _find _new _modify _first _request"><!--
      --><input type="text" class="name _ _find _new _modify _request"><!--
      --><select class="inout _ _new _modify _request"><option value="1">ΕΣΟΔΑ</option><option value="2">ΕΞΟΔΑ</option></select><!--
      -->${this.fundGrid[0].codeHTML}<!--
@@ -36,11 +36,13 @@ class GenresForm extends Form {
       </div>
     `;
 
-    this.orderHTML=`
+    this.order.HTML+=`
       <option value="code">ΚΩΔΙΚΟΣ</option>
       <option value="name">ΟΝΟΜΑ</option>
       <option value="fund_id">ΛΟΓΑΡΙΑΣΜΟΣ</option>
     `;
+    this.order.field='code';
+    this.order.asc_desc='ASC';
 
     this.join=[
       {table:'funds', relation:'genres.fund_id=funds.id', fields:[{name:'name', alias:'fund_name'}]}

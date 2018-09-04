@@ -1,0 +1,34 @@
+/* arrows */
+
+i {
+  position: absolute;
+  margin-left: -1rem;
+
+  border: solid var(--color-dark);
+  border-width: 0 2px 2px 0;
+  display: inline-block;
+  padding: 0.2rem;
+  cursor: pointer;
+}
+
+i.arrow.right {
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+}
+
+i.arrow.left {
+  transform: rotate(135deg);
+  -webkit-transform: rotate(135deg);
+}
+
+i.arrow.up {
+  transform: rotate(-135deg);
+  -webkit-transform: rotate(-135deg);
+  margin-top: 0.75rem;
+}
+
+i.arrow.down {
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  margin-top: 0.75rem;
+}

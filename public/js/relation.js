@@ -3,86 +3,98 @@
 class Relation {
   constructor() {
     this.parent=null;
-    this.idClass=null;
-    this.nameClass=null;
-    this.listClass=null;
+    this.elmId=null;
+    this.elmName=null;
+    this.elmArrow=null;
+    this.elmList=null;
     this.url=null;
     this.onSelect=null;
   }
 
   init(parent, onSelect=null) {
     this.parent=parent;
-    this.parent.querySelector(this.nameClass).onfocus=(e)=> this.onFocus(e);
-    this.parent.querySelector(this.nameClass).onblur=(e)=> this.onBlur(e);
+    this.elmId=this.parent.querySelector(this.elmId);
+    this.elmName=this.parent.querySelector(this.elmName);
+    this.elmArrow=this.parent.querySelector(this.elmArrow);
+    this.elmList=this.parent.querySelector(this.elmList);
+
+    this.elmName.onfocus=(e)=> this.onFocus(e);
+    this.elmName.onblur=(e)=> this.onBlur(e);
+    this.elmName.onkeydown=(e)=> e.which===40?this.openList(e):e.which===38?this.closeList():null;
+    this.elmArrow.onclick=(e)=> findClass(e.target, 'down')?this.openList({target:this.elmName}):this.closeList();
+ 
+    this.elmName.parentObject=this;
     this.onSelect=onSelect;
   }
- 
+   
   composeListItem(values) {
-    return `<li><input type='button' class='name' value=${values.name}>
+    return `<li><input type='button' class='name' value='${values.name}'>
       <span class='id' style="display: none;">${values.id}</span></li>`;
   }
 
   fillChoice(data=null, listItemPos=0) {
-    this.parent.querySelector(this.idClass).value=!data?'':data[listItemPos].id;
-    this.parent.querySelector(this.nameClass).value=!data?'':data[listItemPos].name;
-    if (this.onSelect) this.onSelect(data, listItemPos);
+    this.elmId.value=!data?'':data[listItemPos].id;
+    this.elmId._value=this.elmId.value;
+    this.elmName.value=!data?'':data[listItemPos].name;
+    this.elmName._value=this.elmName.value;
+    this.onSelect?this.onSelect(data, listItemPos):null;
   }
 
   onFocus(e) {
     e.target._value=e.target.value;
+    this.elmId._value=this.elmId.value;
   }
 
   onBlur(e) {
-    if (e.target.value===e.target._value) {
-      this.parent.querySelector(this.idClass).value===''?e.target.value='':null;
-      if (!e.target.value)
-        this.fillChoice();
-    } else {
-      this.parent.querySelector(this.idClass).value='';
-      if (e.target.value!=='') {
-        request(this.url, {find: [{'name':(e.target.value.indexOf('%')>=0?'name':'code'), 'value': e.target.value}]})
-        .then(data=> {
-          if (data.error) throw data;
-          if (data.length===1)
-            this.fillChoice(data, 0);
-          else {
-            this.parent.querySelector(this.listClass).style.display='block';
-            this.parent.querySelector(this.listClass).style.overflow='auto';
-            this.parent.querySelector(this.listClass).innerHTML='';
-            data.forEach(x=> this.parent.querySelector(this.listClass).innerHTML+=this.composeListItem(x));
-            this.parent.querySelector(this.listClass).querySelectorAll('INPUT').forEach((x,i)=> x.onclick=(e)=> {
-              this.parent.querySelector(this.listClass).style.display='none';
-              this.fillChoice(data, i);
-            });
-            this.parent.querySelector(this.listClass).querySelectorAll('INPUT').forEach((x,i)=> x.onblur=(e)=> {
-              this.onBlurList(e);
-            });
-//            window.focus();
-            this.parent.querySelector(this.listClass).querySelector('INPUT').focus();
-          }
-        })
-        .catch(error=> alert((error.error)?error.error:error))
-        .finally(()=> e.target.value!=='' && 
-          this.parent.querySelector(this.idClass).value==='' &&
-          this.parent.querySelector(this.listClass).style.display==='none'?e.target.focus():null
-        );
-      }
-    }
+    if ( this.elmList.style.display==='none' && (e.target.value!==e.target._value || this.elmId.value!==this.elmId._value))
+      this.fillChoice();
   }
 
-  onBlurList(e) {
-    setTimeout(()=> {
-    if (!this.parent.querySelector(this.listClass).querySelector(':focus'))
-      this.parent.querySelector(this.listClass).style.display='none';
-    }, 10);
+  openList(e) {
+    replaceClass(this.elmArrow, 'down', 'up');
+    if (e.target.value!=='' && (e.target.value!==e.target._value || this.elmId.value!==this.elmId._value)) {
+      request(this.url, {find: [{'name':(e.target.value.indexOf('%')>=0?'name':'code'), 'value': e.target.value}]})
+      .then(data=> {
+        if (data.error) throw data;
+        if (data.length===1) {
+          this.fillChoice(data, 0);
+          this.closeList();
+        } else {
+          this.elmList.style.width=this.elmName.offsetWidth;
+          this.elmList.style.marginLeft=-this.elmName.offsetWidth;
+
+          this.elmList.style.display='block';
+          this.elmList.style.overflow='auto';
+          this.elmList.innerHTML='';
+          data.forEach(x=> this.elmList.innerHTML+=this.composeListItem(x));
+          this.elmList.querySelectorAll('INPUT').forEach((x,i)=> x.onclick=(e)=> {
+            this.fillChoice(data, i);
+            this.closeList();
+            this.elmName.focus();
+          });
+          this.elmList.querySelector('INPUT').focus();
+        }
+      })
+      .catch(error=> {
+        alert((error.error)?error.error:error);
+        this.closeList();
+      });
+    } else 
+      this.closeList();
   }
+
+  closeList() {
+    this.elmList.style.display='none';
+    replaceClass(this.elmArrow, 'up', 'down');
+  }
+
 }
 
 class FundRelation extends Relation {
   constructor() {
     super();
     this.codeHTML=`<!--
-   --><input type="text" class="fund_name _ _find _new _modify"><!--
+   --><input type="text" class="fund_name _ _find _new _modify _relation"><i class="fund_arrow arrow down"></i><!--
    --><div class="fund_tools" style="display: inline-block; width: 0px; height: 0px;"><!--
      --><input type="text" class="fund_id _ _request" style="display: none;"><!--
      --><ul class="fund_list _" style="display: none;"></ul><!--
@@ -91,9 +103,10 @@ class FundRelation extends Relation {
   }
 
   init(parent, onSelect) {
-    this.idClass='.fund_id';
-    this.nameClass='.fund_name';
-    this.listClass='.fund_list';
+    this.elmId='.fund_id';
+    this.elmName='.fund_name';
+    this.elmArrow='.fund_arrow';
+    this.elmList='.fund_list';
     this.url='/funds/find';
     super.init(parent, onSelect);
   }
@@ -103,26 +116,27 @@ class GenreRelation extends Relation {
   constructor() {
     super(parent);
     this.codeHTML=`<!--
-   --><input type="text" class="genre_name _ _find _new _modify"><!--
+   --><input type="text" class="genre_name _ _find _new _modify _relation"><i class="genre_arrow arrow down"></i><!--
    --><div class="fund_tools" style="display: inline-block; width: 0px; height: 0px;"><!--
      --><input type="text" class="genre_id _ _request" style="display: none;"><!--
-     --><ul class="genre_list _" style="display: none;"></ul><!--
      --><input type="text" class="genre_inout" style="display: none;"><!--
      --><input type="text" class="genre_fund_id" style="display: none;"><!--
+     --><ul class="genre_list _" style="display: none;"></ul><!--
    --></div><!--
  -->`;
   }
 
   init(parent, onSelect) {
-    this.idClass='.genre_id';
-    this.nameClass='.genre_name';
-    this.listClass='.genre_list';
+    this.elmId='.genre_id';
+    this.elmName='.genre_name';
+    this.elmArrow='.genre_arrow';
+    this.elmList='.genre_list';
     this.url='/genres/find';
     super.init(parent, onSelect);
   }
 
   composeListItem(values) {
-    return `<li><input type='button' class='name' value=${values.name}>
+    return `<li><input type='button' class='name' value='${values.name}'>
       <span class='id' style="display: none;">${values.id}</span>
       <span class='inout' style="display: none;">${values.inout}</span>
       <span class='fund_id' style="display: none;">${values.fund_id}</span></li>`;

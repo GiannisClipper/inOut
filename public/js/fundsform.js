@@ -11,7 +11,7 @@ class FundsForm extends Form {
         </div>
         <div class="right">
           <div>ID</div><div><input type="text" class="id _" readonly></div>
-          <div>Κωδικός</div><div><input type="text" class="code _ _find _new _modify _request"></div>
+          <div>Κωδικός</div><div><input type="text" class="code _ _find _new _modify _first _request"></div>
           <div>Όνομα</div><div><input type="text" class="name _ _find _new _modify _request"></div>
         </div>
       </div>
@@ -24,16 +24,18 @@ class FundsForm extends Form {
     this.gridRowHTML=`
       <div class="record">
         <input type="text" class="id _"><!--
-     --><input type="text" class="code _ _find _new _modify _request"><!--
+     --><input type="text" class="code _ _find _new _modify _first _request"><!--
      --><input type="text" class="name _ _find _new _modify _request"><!--
      --><input type="text" class="icon _">
       </div>
     `;
 
-    this.orderHTML=`
+    this.orderHTML+=`
       <option value="code">ΚΩΔΙΚΟΣ</option>
       <option value="name">ΟΝΟΜΑ</option>
     `;
+    this.order.field='id';
+    this.order.asc_desc='ASC';
 
     this.find=[
       {name:'code', value:'%'},

@@ -64,8 +64,8 @@ module.exports={
     console.log(req.session);
     console.log(req.session?req.session.user:'');
     console.log('login expired');
-//    if (req.method==="GET") return res.redirect('/'); else 
-    g.echo(null, res, 'Λήξη πιστοποιημένης διάρκειας, παρακαλώ συνδεθείται ξανά.');
+    if (req.method==="GET") return res.redirect('/'); 
+    else g.echo(null, res, 'Λήξη πιστοποιημένης διάρκειας, παρακαλώ συνδεθείται ξανά.');
   },
 
   logout: function (req, res) {

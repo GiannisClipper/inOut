@@ -2,8 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <% var page='index'; %>
+  <% const page='no-index'; %>
   <% include ./parts/head.ejs %>
+  <link href="/css/form.css" rel="stylesheet">
 
   <!--τα paths ορίζονται ως προς το /public-->
   <script type="text/javascript" src="/js/client.js" async></script> 
@@ -15,7 +16,7 @@
     <% include ./parts/header.ejs %>
   </header>
 
-  <section>
+  <main class="login">
     <div class="container">
       <div class="login">
         <div>Όνομα χρήστη</div>
@@ -25,7 +26,7 @@
         <input type="button" value="Είσοδος">
       </div>
     </div>
-  </section>
+  </main>
 
   <footer>
     <% include ./parts/footer.ejs %>
@@ -36,16 +37,20 @@
       request('/users/login', {name: document.querySelector('.login .name').value, password: document.querySelector('.login .password').value})
       .then(result=> {
         if (result.error) throw result;
+        removeClass(document.querySelector('main'), 'login');
         removeClass(document.querySelector('header nav'), 'login');
+        removeClass(document.querySelector('footer nav'), 'login');
         document.querySelector('footer nav .right').innerHTML=document.querySelector('.login .name').value;
-        document.querySelector('section').innerHTML='';
+        document.querySelector('main').innerHTML='';
       })
       .catch(error=> alert((error.error)?error.error:error));
     }
 
     function init() {
-      addClass(document.querySelector('header nav'), 'login'); //.forEach((x,i)=> i>0?x.style.visibility='hidden':null);
+      addClass(document.querySelector('header nav'), 'login');
+      addClass(document.querySelector('footer nav'), 'login');
       document.querySelector('input[type="button"]').onclick=login;
+      document.querySelector('.login .name').focus();
     }
  
     window.onload=()=> init();

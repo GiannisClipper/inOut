@@ -1,0 +1,139 @@
+﻿body > main {
+  max-width: none;
+  width: 100%;
+  margin-top: 0;
+}
+
+body > main > .container {
+  width: 100%;
+}
+
+
+/* section */
+
+section.total {
+  --color: var(--color-light);
+}
+section.income {
+  --color: var(--color-dark);
+}
+section.outgo {
+  --color: var(--color-light);
+}
+section.balance {
+  --color: var(--color-dark);
+}
+
+section {
+  background-color: var(--color);
+  color: var(--color-main);
+  padding: 1rem 0;
+}
+
+section .top {  
+  padding: 2rem;
+  font-size: 1.25rem;
+  font-weight: 900;
+  text-align: left;
+}
+
+section .top .title {
+  padding: 0 1rem;
+}
+
+section .middle {
+  width: 100%;
+//  border: 1px dotted black;
+}
+
+
+/* article */
+
+article.income { --color-article: var(--color-ok); }
+article.outgo { --color-article: var(--color-cancel); }
+article.balance { --color-article: var(--color-find); }
+
+article {
+  display: inline-block;
+  vertical-align: top;
+  margin: 1rem;
+  width: 300px;
+  background-color: var(--color-article);
+  color: var(--color-text-dark);
+  border: 1px solid var(--color-text-dark);
+  padding-right: 1.5rem;
+}
+
+article > .basic * {
+  margin: 0;
+  text-align: right;
+//  border: 1px dotted black;
+}
+
+article .top,
+article .bottom {
+  position: relative;
+  top: -0.5rem;
+  padding: 0;
+}
+
+article .top > .left,
+article .top > .right {
+  display: inline-block;
+}
+
+article .top > .left {
+  width: 150px;
+  height: 150px;
+  background: linear-gradient(var(--color-main), var(--color-article));
+  border: 1px solid var(--color-article);
+  font-family: 'Courier new';
+  font-size: 6rem;
+  color: var(--color);
+  text-align: center;
+  line-height: 9rem;
+  overflow: hidden;
+  cursor: pointer;
+  vertical-align: top;
+  margin-bottom: 0.75rem;
+}
+
+article .top > .left > img {
+  padding: 0;
+}
+
+article .top > .right {
+  width: 100px;
+  vertical-align: bottom;
+}
+
+article .top > .right > .percent,
+article .top > .right > .amount {
+  font-size: 1.1rem;
+  font-weight: 600;
+  vertical-align: bottom;
+}
+
+article .bottom > .title {
+  padding-bottom: 0.75rem;
+  font-size: 1.1rem;
+}
+
+article .bottom > .more {
+  cursor: pointer;
+  padding-right: 0.7rem;
+}
+article .bottom > .more > .arrow {
+  display: inline-block;
+  margin-top: -0.5rem;
+  border-color: var(--color-text-dark);
+}
+
+article > .more {
+  font-family: 'Courier new';
+  font-size: 0.85rem;
+  text-align: right;
+}
+article > .more span.amount {
+  font-weight: 600;
+}
