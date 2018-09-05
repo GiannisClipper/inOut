@@ -22,7 +22,8 @@ class Relation {
     this.elmName.onblur=(e)=> this.onBlur(e);
     this.elmName.onkeydown=(e)=> e.which===40?this.openList(e):e.which===38?this.closeList():null;
     this.elmArrow.onclick=(e)=> findClass(e.target, 'down')?this.openList({target:this.elmName}):this.closeList();
- 
+//     this.elmArrow.onclick=(e)=> alert(this.elmName.className);
+
     this.elmName.parentObject=this;
     this.onSelect=onSelect;
   }
@@ -46,8 +47,7 @@ class Relation {
   }
 
   onBlur(e) {
-    if ( this.elmList.style.display==='none' && (e.target.value!==e.target._value || this.elmId.value!==this.elmId._value))
-      this.fillChoice();
+    setTimeout(()=>findClass(this.elmArrow, 'down') && (e.target.value!==e.target._value || this.elmId.value!==this.elmId._value)?this.fillChoice():null, 300);
   }
 
   openList(e) {
@@ -119,7 +119,7 @@ class GenreRelation extends Relation {
    --><input type="text" class="genre_name _ _find _new _modify _relation"><i class="genre_arrow arrow down"></i><!--
    --><div class="fund_tools" style="display: inline-block; width: 0px; height: 0px;"><!--
      --><input type="text" class="genre_id _ _request" style="display: none;"><!--
-     --><input type="text" class="genre_inout" style="display: none;"><!--
+     --><input type="text" class="genre_inout _" style="display: none;"><!--
      --><input type="text" class="genre_fund_id" style="display: none;"><!--
      --><ul class="genre_list _" style="display: none;"></ul><!--
    --></div><!--

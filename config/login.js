@@ -74,7 +74,7 @@ module.exports={
 
   noGuest: function (req, res, next) {
     if (req.session.user.level==='guest')
-      g.echo(null, res, `Στις δυνατότητες πρόσβασης σε επίπεδο επισκέπτη/guest
+      g.echo(null, res, `Στις δυνατότητες πρόσβασης επιπέδου επισκέπτη/guest
 δεν περιλαμβάνεται η καταχώριση νέων εγγραφών καθώς 
 και η τροποποίηση ή διαγραφή υφιστάμενων.`);
     else 

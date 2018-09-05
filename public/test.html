@@ -2,58 +2,54 @@
 <html>
 <head>
   <style>
-  .left, .right {
-    display: inline-block;
-    vertical-align: top;
+  * {
+    margin: 0;
+    padding: 0;
   }
-  .left span, .right span{
-    display: block;
+  html, body {
+    height: 100%;
+    background-color: cyan;
   }
-
-  .test {
-    border: 1px solid black;
-    width: 400px;
-    height: 266px;
-    background-color: orange;
-
+  .box {
+    border: 1px dotted green;
+    height: 100%;
   }
-  .test._2 {
-    border: 1px dashed green;
-    position: relative;
-    bottom: -90px;
-    left: 90px;
-    background-color: green;
+  .bla {
+    background-color: lightgreen;
+    border-left: 4px solid grey;
+  }
+  .bla:before {
+    content: '';
+    position: absolute;
+    height: 1em;
+    width: 4px;
+    background-color: lightgreen;
+    left: -4px;
+  }
+  .bla p {
+    margin-left: 20px;
   }
   </style>
 </head>
 <body>
+<div class='box'>
+  <div class='bla'>
+  <p>bla bla bla bla...</p>
+  <p>la la la la...</p>
+  <p>tra la la...</p>
+  <p>bla bla...</p>
+  </div>
+</div>
 
 
 
-  <div style="height: 190px"></div>
-  <div class="left"><span>L1</span><span>L2</span><span>L3</span></div>
-  <div class="right"><span>R1</span><span>R2</span></div>
-  <div class='test _1'><div class='test _2'></div></div>
-  <div class='test _3'></div>
-  <script type="text/javascript">
-
-function saveFile(name,data) {
-  var elem=document.createElement('a');
-  elem.setAttribute('href','data:text/plain;charset=utf-8,'+encodeURIComponent(data));
-  elem.setAttribute('download',name);
-  elem.style.display='none';
-  document.body.appendChild(elem);
-  elem.click();
-  document.body.removeChild(elem);
-}
-
+  <script>
 function test() {
   let _={code: '001', name: 'john'};
   for (var f in _)
     console.log(f);
 }
     window.onload=test();
-//saveFile(`test-download.txt`,JSON.stringify([{code: '001', name: 'whatever'},{code: '002', name: 'whatever2'}]));
   </script>
 </body>
 </html>

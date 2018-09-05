@@ -26,8 +26,8 @@
   width: 12rem;
 }
 
-.form .commands input.toggle {background-color: var(--color-light); color: var(--color-text-dark);}
-.form .commands input.clear {background-color: transparent; border: 1px solid var(--color-dark); color: var(--color-text-dark);}
+.form .commands input.toggle {background-color: var(--color-back); color: var(--color-text-dark);}
+.form .commands input.clear {background-color: transparent; border: 1px solid var(--color-front); color: var(--color-text-dark);}
 .form .commands input.find {background-color: var(--color-find); color: var(--color-text-dark);}
 .form .commands input.new {background-color: var(--color-new); color: var(--color-text-dark);}
 .form .commands input.modify {background-color: var(--color-modify); color: var(--color-text-dark);}
@@ -89,12 +89,12 @@
 .form .card .record div div > select {
   height: 2rem;
   font-size: 0.9rem;
-  border: 1px solid var(--color-dark);
+  border: 1px solid var(--color-front);
 }
 
 .form .card .record div div > input:enabled, 
 .form .card .record div div > select:enabled {
-  border: 1px dashed var(--color-dark);
+  border: 1px dashed var(--color-text-dark);
 }
 
 .form .card .record .id {width: 4rem;}
@@ -144,7 +144,7 @@
 
 .form .grid .record.focused > input,
 .form .grid .record.focused > select {
-  border-color: var(--color-dark);
+  border-color: var(--color-front);
 }
 
 .form .grid .record > input:enabled, 
@@ -179,7 +179,7 @@
 }
 
 .form .card .record .canvas canvas {
-  border: 1px solid var(--color-dark);
+  border: 1px solid var(--color-front);
 }
 
 .form .card .record .canvas .tools .button, 
@@ -198,7 +198,7 @@
 .form .record .fund_list {
   position: absolute;
   height: 8rem;
-  margin-top: 1rem;
+  margin-top: 0.75rem;
 //  background-color: var(--color-find);
   font-size: 0.9rem; //smaller;
 //  color: var(--color-text-dark);
@@ -222,7 +222,7 @@ i {
   position: absolute;
   margin-left: -1rem;
 
-  border: solid var(--color-dark);
+  border: solid var(--color-front);
   border-width: 0 2px 2px 0;
   display: inline-block;
   padding: 0.2rem;

@@ -54,7 +54,7 @@ class TransForm extends Form {
     this.order.asc_desc='DESC';
 
     this.join=[
-      {table:'genres', relation:'trans.genre_id=genres.id', fields:[{name:'name', alias:'genre_name'}]},
+      {table:'genres', relation:'trans.genre_id=genres.id', fields:[{name:'name', alias:'genre_name'}, {name:'inout', alias:'genre_inout'}]},
       {table:'funds', relation:'trans.fund_id=funds.id', fields:[{name:'name', alias:'fund_name'}]}
     ];
 
@@ -79,11 +79,11 @@ class TransForm extends Form {
       this.elmRecord.querySelector('.genre_inout').value!=='1'?this.elmRecord.querySelector('.income').value='':null;
       this.elmRecord.querySelector('.outgo').disabled=(this.elmRecord.querySelector('.genre_inout').value!=='2')?true:false;
       this.elmRecord.querySelector('.genre_inout').value!=='2'?this.elmRecord.querySelector('.outgo').value='':null;
-      this.elmRecord.querySelector('.fund_id').value=this.elmRecord.querySelector('.genre_fund_id').value;
-      if (!this.elmRecord.querySelector('.fund_id').value)
+      this.elmRecord.querySelector('._request.fund_id').value=this.elmRecord.querySelector('.genre_fund_id').value;
+      if (!this.elmRecord.querySelector('._request.fund_id').value)
         this.elmRecord.querySelector('.fund_name').value='';
       else
-        request(this.url.funds, {find: [{'name':'id', 'value':this.elmRecord.querySelector('.fund_id').value}]})
+        request(this.url.funds, {find: [{'name':'id', 'value':this.elmRecord.querySelector('._request.fund_id').value}]})
         .then(data=> {
           if (data.error) throw data;
           this.elmRecord.querySelector('.fund_name').value=data[0].name;})
@@ -108,6 +108,12 @@ class TransForm extends Form {
     this.fundCard.init(this.elmCard.querySelector('.record'));
     this.elmGrid.querySelectorAll('.record').forEach((x,i)=> this.fundGrid[i].init(x));
     this.refresh();
+  }
+
+  clickModify() {
+    super.clickModify();
+    this.elmRecord.querySelector('.income').disabled=(this.elmRecord.querySelector('.genre_inout').value!=='1')?true:false;
+    this.elmRecord.querySelector('.outgo').disabled=(this.elmRecord.querySelector('.genre_inout').value!=='2')?true:false;
   }
 
   okModify() {

@@ -30,7 +30,7 @@ class FundsForm extends Form {
       </div>
     `;
 
-    this.orderHTML+=`
+    this.order.HTML+=`
       <option value="code">ΚΩΔΙΚΟΣ</option>
       <option value="name">ΟΝΟΜΑ</option>
     `;
