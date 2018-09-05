@@ -478,7 +478,7 @@ console.log('fillGrid offset:'+this.offset+'/ index:'+(this.iView+1));
                        (this.parent.querySelector('.order SELECT.fields').value && this.parent.querySelector('.order SELECT.asc_desc').value?' '+this.parent.querySelector('.order SELECT.asc_desc').value:'')
                 };
           return request(this.url.count, data)
-          .then(result=> this.viewLength=parseInt(result.count))
+          .then(result=> this.viewLength=parseInt(result.rows[0].count))
         }
     });
   }
