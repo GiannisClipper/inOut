@@ -45,9 +45,9 @@ module.exports={
   },
 
   count: function (name, req, res) {
-    let sql=`SELECT count(id) as count FROM ${name}`;
+    let sql=`SELECT count(${name}.id) as count FROM ${name}`;
     sql+=req.body.find.map((x,i)=> `${(i===0?' WHERE ':' AND ')}${this.condition(name, x)}`).join('');
-    sql+=req.body.order?` ORDER BY ${req.body.order}`:'';
+    sql+=req.body.order?` ORDER BY ${name}.${req.body.order}`:'';
     console.log(sql);
     g.db.query(sql, (err, result)=> g.echo(err, res, result));
   },
