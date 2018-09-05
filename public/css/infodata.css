@@ -12,16 +12,16 @@ body > main > .container {
 /* section */
 
 section.total {
-  --color: var(--color-light);
+  --color: var(--color-back);
 }
 section.income {
-  --color: var(--color-dark);
+  --color: var(--color-front);
 }
 section.outgo {
-  --color: var(--color-light);
+  --color: var(--color-back);
 }
 section.balance {
-  --color: var(--color-dark);
+  --color: var(--color-front);
 }
 
 section {
