@@ -39,9 +39,9 @@
   title=`ΣΥΝΟΛΑ (${from}-${till})`;
   className='total';
   articles=[];
-  articles.push({className:'income', title:'ΕΣΟΔΑ', alterIcon:'+', amount:shaped(income), percent:pcent(income, income+outgo).toFixed(0)+'%', more:funds.map(x=> {return {name:x.name, amount:shaped(x.income)}})});
-  articles.push({className:'outgo', title:'ΕΞΟΔΑ', alterIcon:'-', amount:shaped(outgo), percent:pcent(outgo, income+outgo).toFixed(0)+'%', more:funds.map(x=> {return {name:x.name, amount:shaped(x.outgo)}})});
-  articles.push({className:(income>outgo?'income':income<outgo?'outgo':'balance'), title:'ΥΠΟΛΟΙΠΟ', alterIcon:'=', amount:shaped(income-outgo), percent:'', more:funds.map(x=> {return {name:x.name, amount:shaped(x.income-x.outgo)}})}); %>
+  articles.push({className:'income', title:'ΕΣΟΔΑ', alterIcon:'+', amount:shaped(income), percent:pcent(income, income).toFixed(0)+'%', more:funds.map(x=> {return {name:x.name, amount:shaped(x.income)}})});
+  articles.push({className:'outgo', title:'ΕΞΟΔΑ', alterIcon:'-', amount:shaped(outgo), percent:pcent(outgo, income).toFixed(0)+'%', more:funds.map(x=> {return {name:x.name, amount:shaped(x.outgo)}})});
+  articles.push({className:(income>outgo?'income':income<outgo?'outgo':'balance'), title:'ΥΠΟΛΟΙΠΟ', alterIcon:'=', amount:shaped(income-outgo), percent:pcent(income-outgo, income).toFixed(0)+'%', more:funds.map(x=> {return {name:x.name, amount:shaped(x.income-x.outgo)}})}); %>
   <% include ./parts/section-head.ejs %>
   <% for (let i=0; i<articles.length; i++) {
     title=articles[i].title;

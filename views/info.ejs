@@ -32,6 +32,9 @@
   
   <script type="text/javascript">
     function process(period) {
+      if (!period.from())
+        return;
+
       let loader=openLoader();
       request('/info/data', {username:document.querySelector('footer nav .right').innerHTML, from: period.from(), till: period.till()}, 'text')
       .then(data=> {

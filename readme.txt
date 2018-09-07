@@ -11,9 +11,9 @@ npm install body-parser --save
 
 npm install client-sessions --save
 
-npm install ejs --save
+npm install bcrypt --save
 
-npm install sqlite3 --save
+npm install ejs --save
 
 npm install pg --save
 ---------

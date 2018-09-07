@@ -1,11 +1,11 @@
 //server.js
 
-var g=require('./config/globals.js');
-var express=require('express');
+const g=require('./config/globals.js');
+const express=require('express');
 g.app=express();
 
 //middleware to pass data on post requests
-var bodyParser=require('body-parser');
+const bodyParser=require('body-parser');
 g.app.use(bodyParser.urlencoded({ extended: true })); //false?
 g.app.use(bodyParser.json());
 
@@ -17,10 +17,11 @@ g.app.use(bodyParser.json());
 //});
 
 //middleware for login-authentication
-var session=require('client-sessions');
+const bcrypt=require('bcrypt');
+const session=require('client-sessions');
 g.app.use(session({
   cookieName: 'session',
-  secret: 'random_string_goes_here_and_is_better_to_use_bcrypt',
+  secret: bcrypt.hashSync('encrypted_random_stuff_goes_here', 10), //'random_string_goes_here_and_is_better_to_use_bcrypt',
   duration: 15*60*1000,
   activeDuration: 15*60*1000,
 }));
@@ -28,29 +29,28 @@ g.app.use(session({
 g.app.engine('html', require('ejs').renderFile);
 g.app.set('view engine', 'html');
 
-var path=require("path");
+const path=require("path");
 g.app.use(express.static(__dirname+'/public'));
-
 
 console.log("Greetings from inOut application");
 g.app.use((req, res, next)=> {console.log(req.url); next();});
 
-var info=require('./routes/info.routes.js');
+const info=require('./routes/info.routes.js');
 g.app.use('/info', info);
 
-var trans=require('./routes/trans.routes.js');
+const trans=require('./routes/trans.routes.js');
 g.app.use('/trans', trans);
 
-var genres=require('./routes/genres.routes.js');
+const genres=require('./routes/genres.routes.js');
 g.app.use('/genres', genres);
 
-var funds=require('./routes/funds.routes.js');
+const funds=require('./routes/funds.routes.js');
 g.app.use('/funds', funds);
 
-var users=require('./routes/users.routes.js');
+const users=require('./routes/users.routes.js');
 g.app.use('/users', users);
 
-var etc=require('./routes/etc.routes.js');
+const etc=require('./routes/etc.routes.js');
 g.app.use('/', etc);
 
 

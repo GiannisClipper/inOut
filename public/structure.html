@@ -1,0 +1,145 @@
+<!DOCTYPE=html>
+<html>
+
+<head>
+<style>
+body {
+  text-align: center;
+}
+
+body > div:first-child {
+  background-color: rgb(255,235,145);
+  padding: 0.5em;
+}
+
+div {
+  display: inline-block;
+  vertical-align: top;
+  margin: 0.25em;
+}
+
+span {
+  display: block;
+  text-align: left;
+}
+
+span.dir {
+  border-left: 1px dotted;
+  border-bottom: 1px dotted;
+  padding: 0.25em;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+a:selected {
+  color: black;
+}
+</style>
+
+<script>
+const stru=
+{dir:'inout', ls:[
+  'server.js',
+  'package-lock.json',
+  'package.json',
+  'readme.txt',
+  'favicon.ico',
+  {dir:'config', ls:[
+    'globals.js',
+    'dbconfig_pg.js',
+    'dbcomm_pg.js',
+    'login.js'
+  ]},
+
+  {dir:'ctrls', ls:[
+    'users.ctrl.js',
+    'funds.ctrl.js',
+    'genres.ctrl.js',
+    'trans.ctrl.js',
+    'info.ctrl.js',
+    'etc.ctrl.js'
+  ]},
+
+  {dir:'public', ls:[
+    {dir:'css', ls:[
+      'style.css',
+      'form.css',
+      'arrows.css',
+      'infodata.css'
+    ]},
+    {dir:'js', ls:[
+      'form.js',
+      'usersform.js',
+      'fundsform.js',
+      'genresform.js',
+      'transform.js',
+      'lib.js',
+      'client.js',
+      'canvas.js',
+      'relation.js',
+      'dateinput.js',
+      'floatinput.js'
+    ]}
+  ]},
+
+  {dir:'routes', ls:[
+    'users.routes.js',
+    'funds.routes.js',
+    'genres.routes.js',
+    'trans.routes.js',
+    'info.routes.js',
+    'etc.routes.js'
+  ]},
+
+  {dir:'views', ls:[
+    'index.ejs',
+    'users.ejs',
+    'funds.ejs',
+    'genres.ejs',
+    'trans.ejs',
+    'info.ejs',
+    'infodata.ejs',
+    'about.ejs',
+    'admin.ejs',
+    {dir:'parts', ls:[
+      'head.ejs',
+      'header.ejs',
+      'footer.ejs',
+      'section-head.ejs',
+      'section-foot.ejs',
+      'article.ejs',
+      'more.ejs'
+    ]}
+  ]}
+]}
+
+function draw(stru, path='', retval='') {
+  (!path)?path='./':path+=`${stru.dir}/`;
+  retval+=`<div><span class="dir">${stru.dir}</span>`;
+
+  let counter=0;
+  for (let i=0; i<stru.ls.length; i++) {
+    if (typeof stru.ls[i]==='string') {
+      if (++counter===1) retval+=`<div>`;
+      retval+=`<span><a href="${path}${stru.ls[i]}">${stru.ls[i]}</a></span>`;
+    }
+  }
+  if (counter>0) retval+=`</div>`;
+
+  for (let i=0; i<stru.ls.length; i++) {
+    if (typeof stru.ls[i]!=='string')
+      retval+=draw(stru.ls[i], path);
+  }
+  retval+=`</div>`;
+  return retval;
+}
+
+</script>
+</head>
+
+<body onload="document.querySelector('body').innerHTML=draw(stru);">
+</body>
+
+</html>

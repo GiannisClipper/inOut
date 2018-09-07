@@ -29,7 +29,8 @@ exports.data=function (req, res) {
       for (i=0; i<genres.length; i++)
         if (genres[i].id===row.genre_id) break;
       if (i===genres.length)
-        genres.push({id:row.genre_id, name: null, icon:null, inout:null, more:[]});
+        genres.push({id:row.genre_id, name: null, icon:null, inout:null, amount:0, more:[]});
+      genres[i].amount+=(row.income?parseFloat(row.income):0)+(row.outgo?parseFloat(row.outgo):0);
       genres[i].more.push({remarks:row.remarks, date:styleDate(row.date), amount:(row.income?parseFloat(row.income):0)+(row.outgo?parseFloat(row.outgo):0)});
     }
     funds=funds.sort((x1,x2)=> (x2.income-x2.outgo)-(x1.income-x1.outgo));
