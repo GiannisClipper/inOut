@@ -8,7 +8,8 @@
 
   <!--τα paths ορίζονται ως προς το /public-->
   <script type="text/javascript" src="/js/client.js" async></script> 
-  <script type="text/javascript" src="/js/lib.js"></script>
+  <script type="text/javascript" src="/js/hclass.js"></script>
+  <script type="text/javascript" src="/js/hloader.js"></script>
 </head>
 
 <body>
@@ -20,9 +21,9 @@
     <div class="container">
       <div class="login">
         <div>Όνομα χρήστη</div>
-        <div><input type="text" class="name"></div>
+        <div><input type="text" class="name" value="GUEST"></div>
         <div>Κωδικός εισόδου</div>
-        <div><input type="password" class="password"></div>
+        <div><input type="password" class="password" value="GUEST"></div>
         <input type="button" value="Είσοδος">
       </div>
     </div>
@@ -37,9 +38,9 @@
       request('/users/login', {name: document.querySelector('.login .name').value, password: document.querySelector('.login .password').value})
       .then(result=> {
         if (result.error) throw result;
-        removeClass(document.querySelector('main'), 'login');
-        removeClass(document.querySelector('header nav'), 'login');
-        removeClass(document.querySelector('footer nav'), 'login');
+        HClass.remove(document.querySelector('main'), 'login');
+        HClass.remove(document.querySelector('header nav'), 'login');
+        HClass.remove(document.querySelector('footer nav'), 'login');
         document.querySelector('footer nav .right').innerHTML=document.querySelector('.login .name').value;
         document.querySelector('main').innerHTML='';
       })
@@ -47,8 +48,8 @@
     }
 
     function init() {
-      addClass(document.querySelector('header nav'), 'login');
-      addClass(document.querySelector('footer nav'), 'login');
+      HClass.add(document.querySelector('header nav'), 'login');
+      HClass.add(document.querySelector('footer nav'), 'login');
       document.querySelector('input[type="button"]').onclick=login;
       document.querySelector('.login .name').focus();
     }

@@ -9,10 +9,11 @@
   <!--τα paths ορίζονται ως προς το /public-->
   <script type="text/javascript" src="/js/form.js"></script>
   <script type="text/javascript" src="/js/client.js" async></script> 
-  <script type="text/javascript" src="/js/genresform.js"></script>
-  <script type="text/javascript" src="/js/lib.js"></script>
-  <script type="text/javascript" src="/js/relation.js"></script>
-  <script type="text/javascript" src="/js/canvas.js"></script>
+  <script type="text/javascript" src="/js/formgenres.js"></script>
+  <script type="text/javascript" src="/js/inputrelated.js"></script>
+  <script type="text/javascript" src="/js/inputcanvas.js"></script>
+  <script type="text/javascript" src="/js/hclass.js"></script>
+  <script type="text/javascript" src="/js/hloader.js"></script>
 </head>
 
 <body>
@@ -31,7 +32,7 @@
   </footer>
  
   <script type="text/javascript">
-    const form=new GenresForm(document.querySelector('main > .container'));
+    const form=new FormGenres(document.querySelector('main > .container'));
     window.onload=()=> form.init();
   </script>
 </body>

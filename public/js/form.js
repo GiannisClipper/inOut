@@ -137,8 +137,8 @@ class Form {
   }
 
   fillElem(elm, value) {
-    elm.parentObject && elm.parentObject.constructor.name==='DateInput'?elm.parentObject.raw=value:
-    elm.parentObject && elm.parentObject.constructor.name==='FloatInput'?(value?elm.value=parseFloat(value).toFixed(elm.parentObject.decimals):value):
+    elm.parentObject && elm.parentObject.constructor.name==='InputDate'?elm.parentObject.raw=value:
+    elm.parentObject && elm.parentObject.constructor.name==='InputFloat'?(value?elm.value=parseFloat(value).toFixed(elm.parentObject.decimals):value):
     elm.tagName==='INPUT' && elm.type==='text'?elm.value=value:
     elm.tagName==='INPUT' && elm.type==='password'?elm.value=value:
     elm.tagName==='SELECT'?elm.value=value:
@@ -218,9 +218,9 @@ console.log('fillGrid offset:'+this.offset+'/ index:'+(this.iView+1));
     this.elmControls.querySelector('.order').style.display=(this.screenMode==='find'?'initial':'none');
 
     //ορίζεται η τρέχουσα κατάσταση στα class ώστε να μπορούν να επιλεγούν ανάλογοι χρωματισμοί
-    (this.cardGrid?this.elmCard:this.elmGrid).querySelectorAll('.record ._').forEach(x=> {removeClass(x, 'onfind'); removeClass(x, 'onnew'); removeClass(x, 'onmodify'); removeClass(x, 'ondelete')});
+    (this.cardGrid?this.elmCard:this.elmGrid).querySelectorAll('.record ._').forEach(x=> {HClass.remove(x, 'onfind'); HClass.remove(x, 'onnew'); HClass.remove(x, 'onmodify'); HClass.remove(x, 'ondelete')});
     if (['find', 'new', 'modify', 'delete'].includes(this.screenMode))
-      (this.cardGrid?this.elmCard:this.elmGrid).querySelectorAll(`.record${this.cardGrid?'':'.focused'} ._`).forEach(x=> addClass(x, 'on'+this.screenMode));
+      (this.cardGrid?this.elmCard:this.elmGrid).querySelectorAll(`.record${this.cardGrid?'':'.focused'} ._`).forEach(x=> HClass.add(x, 'on'+this.screenMode));
 
     //ορίζονται τα ενεργά ή μη πεδία
     (this.cardGrid?this.elmCard:this.elmGrid).querySelectorAll('.record ._').forEach(x=> x.disabled=true);
@@ -395,8 +395,8 @@ console.log('fillGrid offset:'+this.offset+'/ index:'+(this.iView+1));
 
   readElem(elm) {
     let retval=null;
-    elm.parentObject && elm.parentObject.constructor.name==='DateInput'?retval=elm.parentObject.rawFrom+(elm.parentObject.rawTill?elm.parentObject.seperateDates+elm.parentObject.rawTill:''):
-    elm.parentObject && elm.parentObject.constructor.name==='FloatInput'?retval=elm.parentObject.from()+(elm.parentObject.till()?elm.parentObject.seperateFloats+elm.parentObject.till():''):
+    elm.parentObject && elm.parentObject.constructor.name==='InputDate'?retval=elm.parentObject.rawFrom+(elm.parentObject.rawTill?elm.parentObject.seperateDates+elm.parentObject.rawTill:''):
+    elm.parentObject && elm.parentObject.constructor.name==='InputFloat'?retval=elm.parentObject.from()+(elm.parentObject.till()?elm.parentObject.seperateFloats+elm.parentObject.till():''):
     elm.tagName==='INPUT' && elm.type==='text'?retval=elm.value:
     elm.tagName==='INPUT' && elm.type==='password'?retval=elm.value:
     elm.tagName==='SELECT'?retval=elm.value:

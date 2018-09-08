@@ -3,6 +3,6 @@
     let elmArticle=sender.parentElement.parentElement.parentElement;
     let elmMore=elmArticle.querySelector('article > .more:last-child');
     elmMore.style.display=(elmMore.style.display==='none')?'block':'none';
-    replaceClass(elmArticle.querySelector('article .bottom > .more > .arrow'), elmMore.style.display==='none'?'up':'down', elmMore.style.display==='none'?'down':'up');
+    HClass.replace(elmArticle.querySelector('article .bottom > .more > .arrow'), elmMore.style.display==='none'?'up':'down', elmMore.style.display==='none'?'down':'up');
   }
 </script>

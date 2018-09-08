@@ -7,8 +7,9 @@
 
   <!--τα paths ορίζονται ως προς το /public-->
   <script type="text/javascript" src="/js/client.js" async></script> 
-  <script type="text/javascript" src="/js/dateinput.js"></script>
-  <script type="text/javascript" src="/js/lib.js"></script>
+  <script type="text/javascript" src="/js/inputdate.js"></script>
+  <script type="text/javascript" src="/js/hclass.js"></script>
+  <script type="text/javascript" src="/js/hloader.js"></script>
 </head>
 
 <body>
@@ -20,7 +21,7 @@
     <div class="container">
       <div class="info">
         <div>Χρονικό διάστημα</div>
-        <div><input type="text" class="period"></div>
+        <div><input type="text" class="period" value=1/1-31/12/18></div>
         <input type="button" class="process" value="Επεξεργασία">
       </div>
     </div>
@@ -32,10 +33,10 @@
   
   <script type="text/javascript">
     function process(period) {
-      if (!period.from())
+      if (!period.from() || !period.till())
         return;
 
-      let loader=openLoader();
+      let loader=HLoader.open();
       request('/info/data', {username:document.querySelector('footer nav .right').innerHTML, from: period.from(), till: period.till()}, 'text')
       .then(data=> {
         if (!data) throw data;
@@ -44,11 +45,11 @@
         document.close();
       })
       .catch(error=> alert((error.error)?error.error:error))
-      .finally(()=> closeLoader(loader));
+      .finally(()=> HLoader.close(loader));
     }
 
     function init() {
-      const period=new DateInput();
+      const period=new InputDate();
       period.input=document.querySelector('.info .period');
       document.querySelector('.info .process').onclick=()=> process(period);
       period.input.focus();

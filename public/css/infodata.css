@@ -23,6 +23,9 @@ section.outgo {
 section.balance {
   --color: var(--color-front);
 }
+section.graph {
+  --color: var(--color-back);
+}
 
 section {
   background-color: var(--color);

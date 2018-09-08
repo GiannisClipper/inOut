@@ -14,14 +14,14 @@ function initFetch(data) {
 };
 
 function request(url='', data={}, resType=null) {
-  let loader=openLoader();
+  let loader=HLoader.open();
   return new Promise((resolve, reject)=> {
       const errors=clientValidate(url, data);
       (errors===null)?resolve():reject(errors);
     }) 
     .then(()=> fetch(url, initFetch(data)))
     .then(response=> (resType==='text')?response.text():response.json())
-    .finally(()=> closeLoader(loader));
+    .finally(()=> HLoader.close(loader));
 }
 
 function clientValidate(url, data) {

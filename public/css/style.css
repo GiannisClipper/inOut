@@ -266,14 +266,21 @@ body .loader {
   border: 4rem solid rgba(0,0,0,0.2);
   border-top: 4rem solid rgba(0,0,0,0.4);
   border-radius: 50%;
+  width: 16rem;
+  height: 16rem;
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 16rem;
-  height: 16rem;
   left: calc(50% - 8rem);
   top: calc(50% - 8rem);
   animation: spin 1.5s linear infinite;
+
+//    position: absolute;
+//    top: 50%;
+//    left: 50%;
+//    -moz-transform: translateX(-50%) translateY(-50%);
+//    -webkit-transform: translateX(-50%) translateY(-50%);
+//    transform: translateX(-50%) translateY(-50%);
 }
 
 @keyframes spin {

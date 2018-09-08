@@ -13,6 +13,7 @@ exports.data=function (req, res) {
   let till=req.body.till.substr(6,4)+req.body.till.substr(3,2)+req.body.till.substr(0,2);
   let funds=[];
   let genres=[];
+  let dates=[];
 
   let sql='';
   new Promise((resolve, reject)=> g.db.query('SELECT date, income, outgo, genre_id, fund_id, remarks FROM trans WHERE date>=$1 AND date<=$2 ORDER BY date', [from, till], (err, result)=> (err)?reject(err):resolve(result)))
@@ -32,7 +33,12 @@ exports.data=function (req, res) {
         genres.push({id:row.genre_id, name: null, icon:null, inout:null, amount:0, more:[]});
       genres[i].amount+=(row.income?parseFloat(row.income):0)+(row.outgo?parseFloat(row.outgo):0);
       genres[i].more.push({remarks:row.remarks, date:styleDate(row.date), amount:(row.income?parseFloat(row.income):0)+(row.outgo?parseFloat(row.outgo):0)});
+
+      if (dates.length===0 || dates[dates.length-1].date!==row.date)
+        dates.push({date:row.date, amount:0});
+      dates[dates.length-1].amount+=(row.income?parseFloat(row.income):0)-(row.outgo?parseFloat(row.outgo):0);
     }
+
     funds=funds.sort((x1,x2)=> (x2.income-x2.outgo)-(x1.income-x1.outgo));
     genres=genres.sort((x1,x2)=> x2.amount-x1.amount);
     sql='SELECT id, name, icon FROM funds WHERE id IN ('+funds.map(x=> x.id).join(',')+')';
@@ -58,7 +64,7 @@ exports.data=function (req, res) {
           genre.inout=row.inout;
           break;
         }
-    res.render('infodata.ejs', {username:req.body.username, from:req.body.from, till:req.body.till, funds:funds, genres:genres});
+    res.render('infodata.ejs', {username:req.body.username, from:req.body.from, till:req.body.till, funds:funds, genres:genres, dates:dates});
   })
   .catch(err=> g.echo(err, res));
 }

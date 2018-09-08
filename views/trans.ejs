@@ -6,14 +6,15 @@
   <% include ./parts/head.ejs %>
   <link href="/css/form.css" rel="stylesheet">
 
-  <!--τα paths ορίζονται ως προς το /public-->
+  <!--τα paths εδώ ορίζονται ως προς το /public-->
   <script type="text/javascript" src="/js/form.js"></script>
   <script type="text/javascript" src="/js/client.js" async></script> 
-  <script type="text/javascript" src="/js/transform.js"></script>
-  <script type="text/javascript" src="/js/lib.js"></script>
-  <script type="text/javascript" src="/js/dateinput.js"></script>
-  <script type="text/javascript" src="/js/floatinput.js"></script>
-  <script type="text/javascript" src="/js/relation.js"></script>
+  <script type="text/javascript" src="/js/formtrans.js"></script>
+  <script type="text/javascript" src="/js/inputdate.js"></script>
+  <script type="text/javascript" src="/js/inputfloat.js"></script>
+  <script type="text/javascript" src="/js/inputrelated.js"></script>
+  <script type="text/javascript" src="/js/hclass.js"></script>
+  <script type="text/javascript" src="/js/hloader.js"></script>
 </head>
 
 <body>
@@ -32,7 +33,7 @@
   </footer>
   
   <script type="text/javascript">
-    const form=new TransForm(document.querySelector('main > .container'));
+    const form=new FormTrans(document.querySelector('main > .container'));
     window.onload=()=> form.init();
   </script>
 </body>
