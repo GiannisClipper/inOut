@@ -1,0 +1,42 @@
+﻿<% let min=max=null;
+for (date of dates) { 
+  min===null || date.amount<min?min=date.amount:null;
+  max===null || date.amount>max?max=date.amount:null;
+}
+
+min=Math.floor(min);
+min/=Math.pow(10, min.toString().length-(min<0)?2:1);
+min=Math.floor(min);
+min*=Math.pow(10, min.toString().length-(min<0)?2:1);
+
+max=Math.ceil(max);
+max/=Math.pow(10, max.toString().length-(max<0)?2:1);
+max=Math.ceil(max);
+max*=Math.pow(10, max.toString().length-(max<0)?2:1);
+
+let step=0;
+step=Math.ceil((max-min)/12);
+step/=Math.pow(10, step.toString().length-(step<0)?2:1);
+step=Math.ceil(step);
+step*=Math.pow(10, step.toString().length-(step<0)?2:1);
+
+let dayWidth=360/HDate.days(HDate.raw(from), HDate.raw(till));
+let x=y=0;
+let points='';
+for (date of dates) {
+  x=Math.floor(HDate.days(HDate.raw(from), date.date)*dayWidth);
+  y=Math.floor(240-(240*Math.abs(date.amount-min)/(step*12)));
+  points+=`${x},${y} `;
+} %>
+<p><%- min %></p>
+<p><%- max %></p>
+<p><%- step %></p>
+<svg height="240" width="360">
+<% for (let i=12; i>=0; i--) { %>
+  <line x1="0" y1="<%- i*20 %>" x2="360" y2="<%- i*20 %>" style="stroke:rgb(128,128,128);stroke-width:1" />
+  <text x="0" y="<%- (i*20)+5 %>" fill="red"><%- (min+(12-i)*step) %></text>
+  <line x1="<%- i*30 %>" y1="0" x2="<%- i*30 %>" y2="240" style="stroke:rgb(128,128,128);stroke-width:1" />
+  <text x="<%- i*30 %>" y="240" fill="red"><%- i+1 %></text>
+  <polyline points="<%- points %>" style="fill:none;stroke:black;stroke-width:1" />
+<% } %>
+</svg>

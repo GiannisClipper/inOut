@@ -73,6 +73,7 @@ class InputDate {
       this.splitedVal.splice(2, 0, this.splitedVal[4]);
     } else if (this.splitedVal.length===5) { //πχ. 15/8-17/8/2018 ή 15.8/17.8.18
       this.splitedVal.splice(2, 0, this.splitedVal[4]);
+    } else if (this.splitedVal.length===6) {
     } else return false;
     return true;
   }

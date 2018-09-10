@@ -25,7 +25,8 @@
   let amount='';
   let percent='';
   let icon=''; 
-  let alterIcon=''; %>
+  let alterIcon=''; 
+  %>
 </head>
 
 <body>
@@ -102,64 +103,23 @@
   <% } %>
   <% include ./parts/section-foot.ejs %>
 
-
-<% class HDate {
-  constructor() {
-  }
-  static raw(date) {return date.substr(6,4)+date.substr(3,2)+date.substr(0,2);}
-
-  static year(rawDate) {return parseInt(rawDate.substr(0,4));}
-  static month(rawDate) {return parseInt(rawDate.substr(4,2));}
-  static day(rawDate) {return parseInt(rawDate.substr(6,2));}
-
-  static year366(year) {return (year%4===0 && year%100!==0) || (year%100===0 && year%400===0)?true:false;}
-  static maxDay(month, year=null) {return (month===2 && HDate.year366(year))?29:[31,28,31,30,31,30,31,31,30,31,30,31][month-1];}
-
-  static days(from, till) {
-    let retval=0;
-    for (let y=HDate.year(from); y<=HDate.year(till); ++y)
-      retval+=HDate.year366(y)?366:365;
-    
-    retval-=HDate.day(from)-1;
-    for (let m=1; m<HDate.month(from); ++m)
-      retval-=HDate.maxDay(m, HDate.year(from));
-
-    retval-=HDate.maxDay(HDate.month(till), HDate.year(till))-HDate.day(till);
-    for (let m=HDate.month(till)+1; m<=12; ++m)
-      retval-=HDate.maxDay(m, HDate.year(till));
-
-    return retval;
-  }
-} %>
-
   <% title=`ΔΙΑΚΥΜΑΝΣΗ ΥΠΟΛΟΙΠΟΥ`;
-  className='graph'; %>
+  className='graph';
+  dates.forEach((x,i)=> i>0?dates[i].amount+=dates[i-1].amount:null);
+  if (dates[0].date!==HDate.raw(from))
+    dates.unshift({date:HDate.raw(from), amount:0});
+  if (dates[dates.length-1].date!==HDate.raw(till))
+    dates.push({date:HDate.raw(till), amount:dates[dates.length-1].amount});
+dates.forEach((x,i)=> console.log(x.date+' : '+x.amount));
+ 
+  const graph=new GraphScale('balance');
+  graph.vSteps=10;
+  graph.hSteps=12;
+  graph.data=dates;
+  graph.HDate=HDate; %>
+
   <% include ./parts/section-head.ejs %>
-
-    <% let min=max=current=0;
-    for (date of dates) { 
-      current+=date.amount;
-      min=(current<min?current:min);
-      max=(current>max?current:max);
-    }
-    let dayWidth=360/HDate.days(HDate.raw(from), HDate.raw(till));
-    let curr=0;
-    let x=y=0;
-    let points='';
-    for (date of dates) {
-      curr+=date.amount;
-      x=Math.floor(HDate.days(HDate.raw(from), date.date)*dayWidth);
-      y=Math.floor(240-(240*Math.abs(curr)/Math.abs(max-min)));
-      points+=`${x},${y} `;
-    } %>
-
-    <svg height="240" width="360">
-    <% for (let i=11; i>0; i--) { %>
-      <line x1="0" y1="<%- i*20 %>" x2="360" y2="<%- i*20 %>" style="stroke:rgb(128,128,128);stroke-width:1" />
-      <line x1="<%- i*30 %>" y1="0" x2="<%- i*30 %>" y2="240" style="stroke:rgb(128,128,128);stroke-width:1" />
-      <polyline points="<%- points %>" style="fill:none;stroke:black;stroke-width:1" />
-    <% } %>
-    </svg>
+  <%- graph.process(); %>
   <% include ./parts/section-foot.ejs %>
 
     </div>
