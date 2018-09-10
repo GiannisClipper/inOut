@@ -80,7 +80,7 @@
     title=genre.name;
     className='outgo';
     amount=shaped(genre.more.map(x=> x.amount).reduce((total,x)=> total+x));
-    percent=pcent(amount, income).toFixed(0)+'%';
+    percent=pcent(amount, outgo).toFixed(0)+'%';
     icon=genre.icon;
     alterIcon=genre.name.substr(0,1);
     more=genre.more; %>
