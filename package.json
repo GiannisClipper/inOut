@@ -1,9 +1,6 @@
 {
   "name": "inout",
   "version": "1.0.0",
-  "engines": {
-    "node": "7.x"
-  },
   "description": "",
   "main": "server.js",
   "scripts": {
@@ -15,7 +12,6 @@
     "nodemon": "^1.17.5"
   },
   "dependencies": {
-    "bcrypt": "^3.0.0",
     "body-parser": "^1.18.3",
     "client-sessions": "^0.8.0",
     "ejs": "^2.6.1",

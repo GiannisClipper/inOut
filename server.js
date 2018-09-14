@@ -17,11 +17,12 @@ g.app.use(bodyParser.json());
 //});
 
 //middleware for login-authentication
-const bcrypt=require('bcrypt');
+//const bcrypt=require('bcrypt-nodejs');
 const session=require('client-sessions');
 g.app.use(session({
   cookieName: 'session',
-  secret: bcrypt.hashSync('encrypted_random_stuff_goes_here', 10), //'random_string_goes_here_and_is_better_to_use_bcrypt',
+//  secret: bcrypt.hashSync('encrypted_random_stuff_goes_here', 10), 
+  secret: 'random_string_goes_here_and_is_better_to_use_bcrypt_but_couldnt_deploy_on_heroku',
   duration: 15*60*1000,
   activeDuration: 15*60*1000,
 }));
