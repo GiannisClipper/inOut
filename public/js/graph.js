@@ -54,7 +54,7 @@ exports.Graph=class Graph {
         parseFloat(row.amount)>this.range.till?this.range.till=row.amount:null;
       }
     let step=this.roundIntUp((this.range.all())/this.range.steps);
-    this.range.steps=Math.ceil(this.range.all()/step); 
+    this.range.steps=Math.ceil(this.range.all()/step)+1; 
     this.range.from=step*Math.floor(this.range.from/step);
     this.range.till=this.range.from+(step*this.range.steps);
 //      this.range.from=this.roundIntDown(this.range.from);
@@ -186,7 +186,7 @@ exports.GraphBars=class GraphScale extends exports.Graph {
       for (row of this.data)
         this.range.till+=parseFloat(row.amount);
       let step=this.roundIntUp((this.range.all())/this.range.steps);
-      this.range.steps=Math.ceil(this.range.all()/step); 
+      this.range.steps=Math.ceil(this.range.all()/step)+1; 
       this.range.till=this.range.from+(step*this.range.steps);
     }
   }

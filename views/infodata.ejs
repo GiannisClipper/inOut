@@ -38,7 +38,6 @@
     <div class="container">
 
   <% className='total';
-//  title=`ΣΥΝΟΛΑ (${from}-${till})`;
   till=(!till)?from:till;
   const total=[
     {className:'income', title:'ΕΣΟΔΑ', alterIcon:'+', amount:shaped(income), percent:pcent(income, income).toFixed(0)+'%', more:funds.map(x=> {return {name:x.name, amount:shaped(x.income)}})},
@@ -67,13 +66,11 @@
   <% include ./parts/section-foot.ejs %>
 
   <% className='income';
-//title=`ΚΑΤΑΝΟΜΗ ΕΣΟΔΩΝ (${shaped(income)} €)`;
   graph=new GraphModule.GraphBars('income');
   graph.title=`ΚΑΤΑΝΟΜΗ ΕΣΟΔΩΝ (${shaped(income)} €)`;
   graph.margin.bottom=30;
-//  graph.range.tillSum=true;
-  graph.data=genres.filter(x=> x.inout===1);
-  graph.data.forEach(x=> x.percent=pcent(x.amount, income).toFixed(0)+'%');
+  graph.data=[];
+  genres.forEach(x=> x.inout===1?graph.data.push({name:x.name, amount:x.amount, percent:pcent(x.amount, income).toFixed(0)+'%'}):null);
   title=graph.process(); %>
 
   <% include ./parts/section-head.ejs %>
@@ -93,13 +90,11 @@
   <% include ./parts/section-foot.ejs %>
 
   <% className='outgo';
-//title=`ΚΑΤΑΝΟΜΗ ΕΞΟΔΩΝ (${shaped(outgo)} €)`;
   graph=new GraphModule.GraphBars('outgo');
   graph.title=`ΚΑΤΑΝΟΜΗ ΕΞΟΔΩΝ (${shaped(outgo)} €)`;
   graph.margin.bottom=30;
-//  graph.range.tillSum=true;
-  graph.data=genres.filter(x=> x.inout===2); 
-  graph.data.forEach(x=> x.percent=pcent(x.amount, outgo).toFixed(0)+'%');
+  graph.data=[];
+  genres.forEach(x=> x.inout===2?graph.data.push({name:x.name, amount:x.amount, percent:pcent(x.amount, outgo).toFixed(0)+'%'}):null);
   title=graph.process(); %>
 
   <% include ./parts/section-head.ejs %>
@@ -119,11 +114,9 @@
   <% include ./parts/section-foot.ejs %>
 
   <% className='balance';
-//title=`ΚΑΤΑΝΟΜΗ ΥΠΟΛΟΙΠΟΥ (${shaped(balance)} €)`;
   graph=new GraphModule.GraphBars('balance');
   graph.title=`ΚΑΤΑΝΟΜΗ ΥΠΟΛΟΙΠΟΥ (${shaped(balance)} €)`;
   graph.margin.bottom=30;
-//  graph.range.tillSum=true;
   graph.data=funds; 
   for (fund of graph.data) {
     fund.className=(fund.income>fund.outgo)?'income':(fund.income<fund.outgo)?'outgo':'balance';
