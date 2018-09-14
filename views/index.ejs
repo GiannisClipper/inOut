@@ -43,6 +43,7 @@
         HClass.remove(document.querySelector('footer nav'), 'login');
         document.querySelector('footer nav .right').innerHTML=document.querySelector('.login .name').value;
         document.querySelector('main').innerHTML='';
+        document.querySelector('footer nav a.about').click();
       })
       .catch(error=> alert((error.error)?error.error:error));
     }
