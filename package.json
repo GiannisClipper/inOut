@@ -1,6 +1,9 @@
 {
   "name": "inout",
   "version": "1.0.0",
+  "engines": {
+    "node": "7.x"
+  },
   "description": "",
   "main": "server.js",
   "scripts": {
