@@ -56,8 +56,8 @@ html {
 
 :root {
   --color-main: rgb(255, 255, 179);
-  --color-back: rgb(206, 169, 245);  //rgb(199, 199, 179);
-  --color-front: rgb(216, 179, 255);  //rgb(204, 204, 189);
+  --color-back: rgb(206, 169, 245);
+  --color-front: rgb(216, 179, 255);
   --color-text-dark: rgb(50, 45, 60);
   --color-find: rgb(255, 237, 122); 
   --color-new: rgb(189, 228, 255); 

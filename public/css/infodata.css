@@ -11,42 +11,39 @@ body > main > .container {
 
 /* section */
 
-section.total {
-  --color: var(--color-back);
-}
-section.income {
-  --color: var(--color-front);
-}
+section.total, 
 section.outgo {
-  --color: var(--color-back);
-}
-section.balance {
+//  --color: rgba(128,128,128,0.1);
   --color: var(--color-front);
 }
-section.graph {
+section.income,
+section.balance {
+//  --color: rgba(128,128,128,0.15);
   --color: var(--color-back);
 }
 
 section {
   background-color: var(--color);
-  color: var(--color-main);
   padding: 1rem 0;
 }
 
-section .top {  
-  padding: 2rem;
-  font-size: 1.25rem;
-  font-weight: 900;
-  text-align: left;
+section > .top,
+section > .bottom {
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-align: center;
+  margin: 1rem 0;
 }
 
-section .top .title {
-  padding: 0 1rem;
+section > .top .title,
+section.balance > .bottom .title {
+//  background-color: var(--color-main);
+  padding: 1rem 1rem 1rem 1rem;
+  display: inline-block;
 }
 
 section .middle {
   width: 100%;
-//  border: 1px dotted black;
 }
 
 
@@ -88,11 +85,11 @@ article .top > .right {
 article .top > .left {
   width: 150px;
   height: 150px;
-  background: linear-gradient(var(--color-main), var(--color-article));
+  background: linear-gradient(white, var(--color-article));
   border: 1px solid var(--color-article);
   font-family: 'Courier new';
   font-size: 6rem;
-  color: var(--color);
+  color: var(--color-article);
   text-align: center;
   line-height: 9rem;
   overflow: hidden;
@@ -139,4 +136,30 @@ article > .more {
 }
 article > .more span.amount {
   font-weight: 600;
+}
+
+/* svg */
+
+svg {
+  background-color: transparent;
+}
+
+svg text {
+  font-size: 0.85rem;
+  fill: var(--color-text-dark);
+}
+
+svg text.title {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+svg.income rect,
+svg rect.income {
+  fill: var(--color-ok);
+}
+
+svg.outgo rect,
+svg rect.outgo {
+  fill: var(--color-cancel);
 }

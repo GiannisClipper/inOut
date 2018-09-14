@@ -1,8 +1,10 @@
-//hdate.js
+﻿//hdate.js
 
 class HDate {
   constructor() {
   }
+  static monthName(month) {return ['ΙΑΝΟΥΑΡΙΟΣ', 'ΦΕΒΡΟΥΑΡΙΟΣ', 'ΜΑΡΤΙΟΣ', 'ΑΠΡΙΛΙΟΣ', 'ΜΑΙΟΣ', 'ΙΟΥΝΙΟΣ', 'ΙΟΥΛΙΟΣ', 'ΑΥΓΟΥΣΤΟΣ', 'ΣΕΠΤΕΜΒΡΙΟΣ', 'ΟΚΤΩΒΡΙΟΣ', 'ΝΟΕΜΒΡΙΟΣ', 'ΔΕΚΕΜΒΡΙΟΣ'][month-1];}
+
   static raw(date) {return date.substr(6,4)+date.substr(3,2)+date.substr(0,2);}
   static numToRaw(year, month, day) {return (year+'').padStart(4, '0')+(month+'').padStart(2, '0')+(day+'').padStart(2, '0');}
 
@@ -20,10 +22,10 @@ class HDate {
     return (month===2 && HDate.year366(year))?29:[31,28,31,30,31,30,31,31,30,31,30,31][month-1];
   }
 
-  static skipMonth(rawDate, counter=1) {
+  static skipMonths(rawDate, counter=1) {
     let year=HDate.year(rawDate);
     let month=HDate.month(rawDate);
-    year+=Math.floor(counter/12);
+    year+=counter/12>0?Math.floor(counter/12):Math.ceil(counter/12);
     month+=counter%12;
     month>12?year+=1:null;
     month>12?month-=12:null;
@@ -32,7 +34,7 @@ class HDate {
     return year+(month+'').padStart(2, '0');
   }
 
-  static skipDay(rawDate, counter=1) {
+  static skipDays(rawDate, counter=1) {
     let year=HDate.year(rawDate);
     let month=HDate.month(rawDate);
     let day=HDate.day(rawDate);
@@ -41,18 +43,18 @@ class HDate {
       return HDate.numToRaw(year, month, day);
     } else if (day+counter<1) {
       counter+=day;
-      rawDate=HDate.skipMonth(rawDate, -1);
+      rawDate=HDate.skipMonths(rawDate, -1);
       year=HDate.year(rawDate);
       month=HDate.month(rawDate);
       day=HDate.maxDay(month, year);
-      return HDate.skipDay(HDate.numToRaw(year, month, day), counter);
+      return HDate.skipDays(HDate.numToRaw(year, month, day), counter);
     } else if (day+counter>HDate.maxDay(month, year)) {
       counter-=HDate.maxDay(month, year)-day+1;
-      rawDate=HDate.skipMonth(rawDate, 1);
+      rawDate=HDate.skipMonths(rawDate, 1);
       year=HDate.year(rawDate);
       month=HDate.month(rawDate);
       day=1;
-      return HDate.skipDay(HDate.numToRaw(year, month, day), counter);
+      return HDate.skipDays(HDate.numToRaw(year, month, day), counter);
     }
   }
 

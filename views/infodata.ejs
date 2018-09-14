@@ -37,59 +37,101 @@
   <main>
     <div class="container">
 
-  <% till=(!till)?from:till;
-  title=`ΣΥΝΟΛΑ (${from}-${till})`;
-  className='total';
-  articles=[];
-  articles.push({className:'income', title:'ΕΣΟΔΑ', alterIcon:'+', amount:shaped(income), percent:pcent(income, income).toFixed(0)+'%', more:funds.map(x=> {return {name:x.name, amount:shaped(x.income)}})});
-  articles.push({className:'outgo', title:'ΕΞΟΔΑ', alterIcon:'-', amount:shaped(outgo), percent:pcent(outgo, income).toFixed(0)+'%', more:funds.map(x=> {return {name:x.name, amount:shaped(x.outgo)}})});
-  articles.push({className:(income>outgo?'income':income<outgo?'outgo':'balance'), title:'ΥΠΟΛΟΙΠΟ', alterIcon:'=', amount:shaped(income-outgo), percent:pcent(income-outgo, income).toFixed(0)+'%', more:funds.map(x=> {return {name:x.name, amount:shaped(x.income-x.outgo)}})}); %>
+  <% className='total';
+//  title=`ΣΥΝΟΛΑ (${from}-${till})`;
+  till=(!till)?from:till;
+  const total=[
+    {className:'income', title:'ΕΣΟΔΑ', alterIcon:'+', amount:shaped(income), percent:pcent(income, income).toFixed(0)+'%', more:funds.map(x=> {return {name:x.name, amount:shaped(x.income)}})},
+    {className:'outgo', title:'ΕΞΟΔΑ', alterIcon:'-', amount:shaped(outgo), percent:pcent(outgo, income).toFixed(0)+'%', more:funds.map(x=> {return {name:x.name, amount:shaped(x.outgo)}})},
+    {className:(income>outgo?'income':income<outgo?'outgo':'balance'), title:'ΥΠΟΛΟΙΠΟ', alterIcon:'=', amount:shaped(income-outgo), percent:pcent(income-outgo, income).toFixed(0)+'%', more:funds.map(x=> {return {name:x.name, amount:shaped(x.income-x.outgo)}})}
+  ]; 
+
+  let graph=new GraphModule.GraphBars('total');
+  graph.title=`ΣΥΝΟΛΑ (${from}-${till})`;
+  graph.margin.bottom=30;
+  graph.data=total;
+  graph.data.forEach(x=> x.name=x.title);
+  title=graph.process(); %>
+
   <% include ./parts/section-head.ejs %>
-  <% for (let i=0; i<articles.length; i++) {
-    title=articles[i].title;
-    className=articles[i].className;
-    amount=articles[i].amount;
-    percent=articles[i].percent;
-    alterIcon=articles[i].alterIcon; 
-    more=articles[i].more %>
+  <% for (let i=0; i<total.length; i++) {
+    title=total[i].title;
+    className=total[i].className;
+    amount=total[i].amount;
+    percent=total[i].percent;
+    alterIcon=total[i].alterIcon; 
+    more=total[i].more %>
     <% include ./parts/article.ejs %>    
-  <% } %>
+  <% } 
+  title=''; %>
   <% include ./parts/section-foot.ejs %>
 
-  <% title=`ΚΑΤΑΝΟΜΗ ΕΣΟΔΩΝ (${shaped(income)} €)`;
-  className='income'; %>
+  <% className='income';
+//title=`ΚΑΤΑΝΟΜΗ ΕΣΟΔΩΝ (${shaped(income)} €)`;
+  graph=new GraphModule.GraphBars('income');
+  graph.title=`ΚΑΤΑΝΟΜΗ ΕΣΟΔΩΝ (${shaped(income)} €)`;
+  graph.margin.bottom=30;
+//  graph.range.tillSum=true;
+  graph.data=genres.filter(x=> x.inout===1);
+  graph.data.forEach(x=> x.percent=pcent(x.amount, income).toFixed(0)+'%');
+  title=graph.process(); %>
+
   <% include ./parts/section-head.ejs %>
   <% for (genre of genres) {
     if (genre.inout!==1) continue;
     title=genre.name;
     className='income';
-    amount=shaped(genre.more.map(x=> x.amount).reduce((total,x)=> total+x));
+//    amount=shaped(genre.more.map(x=> x.amount).reduce((total,x)=> total+x));
+    amount=shaped(genre.amount);
     percent=pcent(amount, income).toFixed(0)+'%';
     icon=genre.icon;
     alterIcon=genre.name.substr(0,1);
     more=genre.more; %>
     <% include ./parts/article.ejs %>    
-  <% } %>
+  <% } 
+  title=''; %>
   <% include ./parts/section-foot.ejs %>
 
-  <% title=`ΚΑΤΑΝΟΜΗ ΕΞΟΔΩΝ (${shaped(outgo)} €)`;
-  className='outgo'; %>
+  <% className='outgo';
+//title=`ΚΑΤΑΝΟΜΗ ΕΞΟΔΩΝ (${shaped(outgo)} €)`;
+  graph=new GraphModule.GraphBars('outgo');
+  graph.title=`ΚΑΤΑΝΟΜΗ ΕΞΟΔΩΝ (${shaped(outgo)} €)`;
+  graph.margin.bottom=30;
+//  graph.range.tillSum=true;
+  graph.data=genres.filter(x=> x.inout===2); 
+  graph.data.forEach(x=> x.percent=pcent(x.amount, outgo).toFixed(0)+'%');
+  title=graph.process(); %>
+
   <% include ./parts/section-head.ejs %>
   <% for (genre of genres) {
     if (genre.inout!==2) continue;
     title=genre.name;
     className='outgo';
-    amount=shaped(genre.more.map(x=> x.amount).reduce((total,x)=> total+x));
+//    amount=shaped(genre.more.map(x=> x.amount).reduce((total,x)=> total+x));
+    amount=shaped(genre.amount);
     percent=pcent(amount, outgo).toFixed(0)+'%';
     icon=genre.icon;
     alterIcon=genre.name.substr(0,1);
     more=genre.more; %>
     <% include ./parts/article.ejs %>    
-  <% } %>
+  <% } 
+  title=''; %>
   <% include ./parts/section-foot.ejs %>
 
-  <% title=`ΚΑΤΑΝΟΜΗ ΥΠΟΛΟΙΠΟΥ (${shaped(balance)} €)`;
-  className='balance'; %>
+  <% className='balance';
+//title=`ΚΑΤΑΝΟΜΗ ΥΠΟΛΟΙΠΟΥ (${shaped(balance)} €)`;
+  graph=new GraphModule.GraphBars('balance');
+  graph.title=`ΚΑΤΑΝΟΜΗ ΥΠΟΛΟΙΠΟΥ (${shaped(balance)} €)`;
+  graph.margin.bottom=30;
+//  graph.range.tillSum=true;
+  graph.data=funds; 
+  for (fund of graph.data) {
+    fund.className=(fund.income>fund.outgo)?'income':(fund.income<fund.outgo)?'outgo':'balance';
+    fund.percent=pcent(fund.income-fund.outgo, balance).toFixed(0)+'%';
+    fund.amount=shaped(fund.income-fund.outgo);
+  }
+  title=graph.process(); %>
+
   <% include ./parts/section-head.ejs %>
   <% for (fund of funds) {
     title=fund.name;
@@ -100,28 +142,21 @@
     alterIcon=fund.name.substr(0,1);
     more=[{name:'ΕΣΟΔΑ', amount:shaped(fund.income)},{name:'ΕΞΟΔΑ', amount:shaped(fund.outgo)}]; %>
     <% include ./parts/article.ejs %>    
-  <% } %>
-  <% include ./parts/section-foot.ejs %>
-
-  <% title=`ΔΙΑΚΥΜΑΝΣΗ ΥΠΟΛΟΙΠΟΥ`;
-  className='graph';
+  <% } 
+  graph=new GraphModule.GraphScale('balance');
+  graph.title=`ΔΙΑΚΥΜΑΝΣΗ ΥΠΟΛΟΙΠΟΥ (${shaped(income-outgo)} €)`;
   dates.forEach((x,i)=> i>0?dates[i].amount+=dates[i-1].amount:null);
-  if (dates[0].date!==HDate.raw(from))
+  if (dates[0].date!==HDate.raw(from)) 
     dates.unshift({date:HDate.raw(from), amount:0});
   if (dates[dates.length-1].date!==HDate.raw(till))
     dates.push({date:HDate.raw(till), amount:dates[dates.length-1].amount});
-dates.forEach((x,i)=> console.log(x.date+' : '+x.amount));
- 
-  const graph=new GraphScale('balance');
-  graph.vSteps=10;
-  graph.hSteps=12;
+  dates.forEach((x,i)=> console.log(x.date+' : '+x.amount));
+  graph.margin.bottom=30;
   graph.data=dates;
-  graph.HDate=HDate; %>
-
-  <% include ./parts/section-head.ejs %>
-  <%- graph.process(); %>
+  graph.HDate=HDate;
+  title=graph.process(); %>
   <% include ./parts/section-foot.ejs %>
-
+ 
     </div>
   </main>
 

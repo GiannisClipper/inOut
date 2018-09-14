@@ -64,7 +64,7 @@ exports.data=function (req, res) {
           genre.inout=row.inout;
           break;
         }
-    res.render('infodata.ejs', {HDate:require('../public/js/hdate.js'), GraphScale:require('../public/js/graphscale.js'), username:req.body.username, from:req.body.from, till:req.body.till, funds:funds, genres:genres, dates:dates});
+    res.render('infodata.ejs', {HDate:require('../public/js/hdate.js'), GraphModule:require('../public/js/graph.js'), username:req.body.username, from:req.body.from, till:req.body.till, funds:funds, genres:genres, dates:dates});
   })
   .catch(err=> g.echo(err, res));
 }
