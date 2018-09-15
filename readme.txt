@@ -11,7 +11,7 @@ npm install body-parser --save
 
 npm install client-sessions --save
 
-npm install bcrypt --save (not deployed on heroku)
+npm install simplecrypt --save
 
 npm install ejs --save
 
