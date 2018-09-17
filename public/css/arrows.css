@@ -3,7 +3,6 @@
 i {
   position: absolute;
   margin-left: -1rem;
-
   border: solid var(--color-front);
   border-width: 0 2px 2px 0;
   display: inline-block;

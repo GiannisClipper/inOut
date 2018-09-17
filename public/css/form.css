@@ -184,7 +184,7 @@
 .form .grid .level {width: 4rem;}
 
 
-/* canvas */
+/* inputCanvas */
 
 .form .card .record .canvas {
   display: block; 
@@ -205,7 +205,7 @@
 }
 
 
-/* relation */
+/* inputRealted */
 
 .form .record .genre_list,
 .form .record .fund_list {
@@ -229,44 +229,7 @@
 }
 
 
-/* arrows */
-
-i {
-  position: absolute;
-  margin-left: -1rem;
-
-  border: solid var(--color-front);
-  border-width: 0 2px 2px 0;
-  display: inline-block;
-  padding: 0.2rem;
-//  outline: 1rem solid transparent;
-  cursor: pointer;
-}
-
-i.arrow.right {
-  transform: rotate(-45deg);
-  -webkit-transform: rotate(-45deg);
-}
-
-i.arrow.left {
-  transform: rotate(135deg);
-  -webkit-transform: rotate(135deg);
-}
-
-i.arrow.up {
-  transform: rotate(-135deg);
-  -webkit-transform: rotate(-135deg);
-  margin-top: 0.75rem;
-}
-
-i.arrow.down {
-  transform: rotate(45deg);
-  -webkit-transform: rotate(45deg);
-  margin-top: 0.75rem;
-}
-
-
-/* floatinput */
+/* inputFloat */
 
 .form .grid .record .income,
 .form .grid .record .outgo {

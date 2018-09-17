@@ -15,6 +15,7 @@ body > div:first-child {
 div {
   display: inline-block;
   vertical-align: top;
+  text-align: left;
   margin: 0.25em;
 }
 
@@ -29,6 +30,19 @@ span.dir {
   padding: 0.25em;
 }
 
+span.file {
+//  border-bottom: 1px dotted;
+}
+
+div.inFile {
+  display: none;
+}
+
+span.inFile {
+  font-size: smaller;
+  color: rgb(96,96,96);
+}
+
 a {
   text-decoration: none;
   color: black;
@@ -41,79 +55,350 @@ a:selected {
 <script>
 const stru=
 {dir:'inout', ls:[
-  'server.js',
-  'package-lock.json',
-  'package.json',
-  'readme.txt',
-  'favicon.ico',
+  {file:'server.js', ls:[]},
+  {file:'package-lock.json', ls:[]},
+  {file:'package.json', ls:[]},
+  {file:'readme.txt', ls:[]},
+  {file:'favicon.ico', ls:[]},
   {dir:'config', ls:[
-    'globals.js',
-    'dbconfig_pg.js',
-    'dbcomm_pg.js',
-    'login.js'
+    {file:'globals.js', ls:[]},
+    {file:'dbconfig_pg.js', ls:[
+{inFile:'setut()'},
+{inFile:'createTable()'},
+{inFile:'createIndex()'},
+{inFile:'dropCreate()'},
+{inFile:'importRec()'},
+{inFile:'importData()'},
+{inFile:'exportData()'}
+    ]},
+    {file:'dbcomm_pg.js', ls:[
+{inFile:'new()'},
+{inFile:'modify()'},
+{inFile:'delete()'},
+{inFile:'find()'},
+{inFile:'count()'},
+{inFile:'condition()'},
+{inFile:'icon()'}
+    ]},
+    {file:'login.js', ls:[
+{inFile:'login()'},
+{inFile:'authent()'},
+{inFile:'login1()'},
+{inFile:'login2()'},
+{inFile:'authent1()'},
+{inFile:'updateUser()'},
+{inFile:'loginExpired()'},
+{inFile:'logout()'},
+{inFile:'noGuest()'}
+    ]}
   ]},
 
   {dir:'ctrls', ls:[
-    'users.ctrl.js',
-    'funds.ctrl.js',
-    'genres.ctrl.js',
-    'trans.ctrl.js',
-    'info.ctrl.js',
-    'etc.ctrl.js'
+    {file:'users.ctrl.js', ls:[
+{inFile:'form()'},
+{inFile:'new()'},
+{inFile:'modify()'},
+{inFile:'delete()'},
+{inFile:'find()'},
+{inFile:'count()'},
+{inFile:'icon()'},
+{inFile:'login()'}
+    ]},
+    {file:'funds.ctrl.js', ls:[
+{inFile:'form()'},
+{inFile:'new()'},
+{inFile:'modify()'},
+{inFile:'delete()'},
+{inFile:'find()'},
+{inFile:'count()'},
+{inFile:'icon()'}
+    ]},
+    {file:'genres.ctrl.js', ls:[
+{inFile:'form()'},
+{inFile:'new()'},
+{inFile:'modify()'},
+{inFile:'delete()'},
+{inFile:'find()'},
+{inFile:'count()'},
+{inFile:'icon()'}
+    ]},
+    {file:'trans.ctrl.js', ls:[
+{inFile:'form()'},
+{inFile:'new()'},
+{inFile:'modify()'},
+{inFile:'delete()'},
+{inFile:'find()'},
+{inFile:'count()'}
+    ]},
+    {file:'info.ctrl.js', ls:[
+{inFile:'form()'},
+{inFile:'data()'}
+    ]},
+    {file:'etc.ctrl.js', ls:[
+{inFile:'index()'},
+{inFile:'about()'},
+{inFile:'admin()'},
+{inFile:'dropCreate()'},
+{inFile:'importData()'},
+{inFile:'exportData()'}
+    ]}
   ]},
 
   {dir:'public', ls:[
     {dir:'css', ls:[
-      'style.css',
-      'form.css',
-      'arrows.css',
-      'infodata.css'
+      {file:'style.css', ls:[
+{inFile:'//clear defaults'},
+{inFile:'//initials'},
+{inFile:'//header'},
+{inFile:'//main'},
+{inFile:'//login & info'},
+{inFile:'//footer'},
+{inFile:'//loader'}
+      ]},
+      {file:'form.css', ls:[
+{inFile:'//form'},
+{inFile:'//card'},
+{inFile:'//grid'},
+{inFile:'//inputCanvas'},
+{inFile:'//inputRelated'},
+{inFile:'//inputFloat'}
+      ]},
+      {file:'arrows.css', ls:[]},
+      {file:'infodata.css', ls:[
+{inFile:'//main'},
+{inFile:'//section'},
+{inFile:'//article'},
+{inFile:'//graph'}
+      ]}
     ]},
     {dir:'js', ls:[
-      'form.js',
-      'formusers.js',
-      'formfunds.js',
-      'formgenres.js',
-      'formtrans.js',
-      'client.js',
-      'inputdate.js',
-      'inputfloat.js',
-      'inputrelated.js',
-      'inputcanvas.js',
-      'hclass.js',
-      'hloader.js',
-      'hdate.js',
-      'graph.js'
+      {file:'form.js', ls:[
+{inFile:'Form{}'},
+{inFile:'init()'},
+{inFile:'clearElem()'},
+{inFile:'clearCard()'},
+{inFile:'clearGrid()'},
+{inFile:'fillElem()'},
+{inFile:'fillCard()'},
+{inFile:'fillGrid()'},
+{inFile:'fillControlsInfo()'},
+{inFile:'gridCurrentPage()'},
+{inFile:'gridCurrentRow()'},
+{inFile:'setClassFocused()'},
+{inFile:'cardGrid::'},
+{inFile:'screenMode::'},
+{inFile:'refresh()'},
+{inFile:'clickToggle()'},
+{inFile:'clickClear()'},
+{inFile:'clickFind()'},
+{inFile:'clickNew()'},
+{inFile:'repeatedNew()'},
+{inFile:'clickModify()'},
+{inFile:'clickDelete()'},
+{inFile:'clickOk()'},
+{inFile:'okNew()'},
+{inFile:'okModify()'},
+{inFile:'okDelete()'},
+{inFile:'okFind()'},
+{inFile:'clickCancel()'},
+{inFile:'cancelNew()'},
+{inFile:'cancelFind()'},
+{inFile:'clickRecord()'},
+{inFile:'dblclickRecord()'},
+{inFile:'clickHome()'},
+{inFile:'clickPrev()'},
+{inFile:'clickNext()'},
+{inFile:'clickEnd()'},
+{inFile:'readElem()'},
+{inFile:'req()'},
+{inFile:'reqNew()'},
+{inFile:'reqModify()'},
+{inFile:'reqDelete()'},
+{inFile:'reqFind()'}
+      ]},
+      {file:'formusers.js', ls:[
+{inFile:'FormUsers{}'},
+{inFile:'init()'},
+{inFile:'fillCard()'},
+{inFile:'screenMode::'},
+{inFile:'okModify()'}
+      ]},
+      {file:'formfunds.js', ls:[
+{inFile:'FormFunds{}'},
+{inFile:'init()'},
+{inFile:'fillCard()'},
+{inFile:'screenMode::'},
+{inFile:'okModify()'}
+      ]},
+      {file:'formgenres.js', ls:[
+{inFile:'FormGenres{}'},
+{inFile:'init()'},
+{inFile:'fillCard()'},
+{inFile:'refresh()'},
+{inFile:'screenMode::'},
+{inFile:'okModify()'}
+      ]},
+      {file:'formtrans.js', ls:[
+{inFile:'FormTrans{}'},
+{inFile:'init()'},
+{inFile:'clickModify()'},
+{inFile:'okModify()'}
+      ]},
+      {file:'client.js', ls:[
+{inFile:'initFetch()'},
+{inFile:'request()'},
+{inFile:'clientValidate()'}
+      ]},
+      {file:'inputdate.js', ls:[
+{inFile:'InputDate{}'},
+{inFile:'input::'},
+{inFile:'onFocus()'},
+{inFile:'onBlur()'},
+{inFile:'valid()'},
+{inFile:'validForm()'},
+{inFile:'validData()'},
+{inFile:'validYear()'},
+{inFile:'fullYear()'},
+{inFile:'validMonth()'},
+{inFile:'validDay()'},
+{inFile:'maxDay()'},
+{inFile:'from()'},
+{inFile:'till()'},
+{inFile:'raw::'},
+{inFile:'rawFrom::'},
+{inFile:'rawTill::'}
+      ]},
+      {file:'inputfloat.js', ls:[
+{inFile:'InputFloat{}'},
+{inFile:'input::'},
+{inFile:'onFocus()'},
+{inFile:'onBlur()'},
+{inFile:'valid()'},
+{inFile:'validForm()'},
+{inFile:'validData()'},
+{inFile:'from()'},
+{inFile:'till()'}
+      ]},
+      {file:'inputrelated.js', ls:[
+{inFile:'InputRelated{}'},
+{inFile:'init()'},
+{inFile:'composeListItem()'},
+{inFile:'fillChoice()'},
+{inFile:'onFocus()'},
+{inFile:'onBlur()'},
+{inFile:'openList()'},
+{inFile:'closeList()'},
+{inFile:'FundRelated{}'},
+{inFile:'init()'},
+{inFile:'GenreRelated{}'},
+{inFile:'init()'},
+{inFile:'composeListItem()'},
+{inFile:'fillChoice()'}
+      ]},
+      {file:'inputcanvas.js', ls:[
+{inFile:'InputCanvas{}'},
+{inFile:'init()'},
+{inFile:'clear()'},
+{inFile:'isClear()'},
+{inFile:'fill()'},
+{inFile:'base64()'},
+{inFile:'IconCanvas{}'},
+{inFile:'init()'},
+{inFile:'delete()'}
+      ]},
+      {file:'hclass.js', ls:[
+{inFile:'HClass{}'},
+{inFile:'add()'},
+{inFile:'find()'},
+{inFile:'remove()'},
+{inFile:'replace()'}
+      ]},
+      {file:'hloader.js', ls:[
+{inFile:'HLoader{}'},
+{inFile:'open()'},
+{inFile:'close()'}
+      ]},
+      {file:'hdate.js', ls:[
+{inFile:'HDate{}'},
+{inFile:'nonthName()'},
+{inFile:'raw()'},
+{inFile:'numToRaw()'},
+{inFile:'year()'},
+{inFile:'month()'},
+{inFile:'day()'},
+{inFile:'year366()'},
+{inFile:'maxDay()'},
+{inFile:'skipMonths()'},
+{inFile:'skipDays()'},
+{inFile:'months()'},
+{inFile:'days()'}
+      ]},
+      {file:'graph.js', ls:[
+{inFile:'Graph{}'},
+{inFile:'svg::'},
+{inFile:'width::'},
+{inFile:'height::'},
+{inFile:'marginT::'},
+{inFile:'marginL::'},
+{inFile:'marginB::'},
+{inFile:'marginR::'},
+{inFile:'graphWidth()'},
+{inFile:'graphHeight()'},
+{inFile:'roundIntUp()'},
+{inFile:'calcRange()'},
+{inFile:'calcItems()'},
+{inFile:'drawRange()'},
+{inFile:'drawItems()'},
+{inFile:'drawGraph()'},
+{inFile:'process()'},
+{inFile:'GraphScale{}'},
+{inFile:'calcItems()'},
+{inFile:'drawItems()'},
+{inFile:'drawGraph()'},
+{inFile:'GraphBars{}'},
+{inFile:'calcRange()'},
+{inFile:'calcItems()'},
+{inFile:'drawItems()'},
+{inFile:'drawGraph()'}
+      ]}
     ]}
   ]},
 
   {dir:'routes', ls:[
-    'users.routes.js',
-    'funds.routes.js',
-    'genres.routes.js',
-    'trans.routes.js',
-    'info.routes.js',
-    'etc.routes.js'
+    {file:'users.routes.js', ls:[]},
+    {file:'funds.routes.js', ls:[]},
+    {file:'genres.routes.js', ls:[]},
+    {file:'trans.routes.js', ls:[]},
+    {file:'info.routes.js', ls:[]},
+    {file:'etc.routes.js', ls:[]}
   ]},
 
   {dir:'views', ls:[
-    'index.ejs',
-    'users.ejs',
-    'funds.ejs',
-    'genres.ejs',
-    'trans.ejs',
-    'info.ejs',
-    'infodata.ejs',
-    'about.ejs',
-    'admin.ejs',
+    {file:'index.ejs', ls:[]},
+    {file:'users.ejs', ls:[]},
+    {file:'funds.ejs', ls:[]},
+    {file:'genres.ejs', ls:[]},
+    {file:'trans.ejs', ls:[]},
+    {file:'info.ejs', ls:[]},
+    {file:'infodata.ejs', ls:[]},
+    {file:'about.ejs', ls:[]},
+    {file:'admin.ejs', ls:[
+{inFile:'init()'},
+{inFile:'clickDropCreate()'},
+{inFile:'clickImportData()'},
+{inFile:'clickExportData()'},
+{inFile:'req()'},
+{inFile:'saveFile()'},
+{inFile:'readFile()'}
+    ]},
     {dir:'parts', ls:[
-      'head.ejs',
-      'header.ejs',
-      'footer.ejs',
-      'section-head.ejs',
-      'section-foot.ejs',
-      'article.ejs',
-      'more.ejs'
+      {file:'head.ejs', ls:[]},
+      {file:'header.ejs', ls:[]},
+      {file:'footer.ejs', ls:[]},
+      {file:'section-head.ejs', ls:[]},
+      {file:'section-foot.ejs', ls:[]},
+      {file:'article.ejs', ls:[]},
+      {file:'more.ejs', ls:[]}
     ]}
   ]}
 ]}
@@ -122,27 +407,46 @@ function draw(stru, path='', retval='') {
   (!path)?path='./':path+=`${stru.dir}/`;
   retval+=`<div><span class="dir">${stru.dir}</span>`;
 
+//--- draw files
   let counter=0;
   for (let i=0; i<stru.ls.length; i++) {
-    if (typeof stru.ls[i]==='string') {
+    if (stru.ls[i].file) {
       if (++counter===1) retval+=`<div>`;
-      retval+=`<span><a href="${path}${stru.ls[i]}">${stru.ls[i]}</a></span>`;
+      retval+=`<span class="file"><a href="${path}${stru.ls[i].file}">${stru.ls[i].file}</a></span>`;
+
+//--- draw functions
+      let counter2=0;
+      for (let j=0; j<stru.ls[i].ls.length; j++) {
+        if (stru.ls[i].ls[j].inFile) {
+          if (++counter2===1) retval+=`<div class="inFile">`;
+          retval+=`<span class="inFile">${stru.ls[i].ls[j].inFile}</span>`;
+        }
+      }
+      if (counter2>0) retval+=`</div>`;
+//---
+
     }
   }
   if (counter>0) retval+=`</div>`;
+//---
 
   for (let i=0; i<stru.ls.length; i++) {
-    if (typeof stru.ls[i]!=='string')
+    if (!stru.ls[i].file)
       retval+=draw(stru.ls[i], path);
   }
   retval+=`</div>`;
   return retval;
 }
 
+function init() {
+  document.querySelector('body').innerHTML=draw(stru);
+  document.onclick=()=> document.querySelectorAll('div.inFile').forEach(x=> x.style.display=(x.style.display==='none')?'block':'none');
+}
+
 </script>
 </head>
 
-<body onload="document.querySelector('body').innerHTML=draw(stru);">
+<body onload="init()">
 </body>
 
 </html>
