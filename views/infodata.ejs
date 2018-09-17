@@ -12,6 +12,8 @@
   <!--τα paths εδώ ορίζονται ως προς το /public-->
   <script type="text/javascript" src="/js/hclass.js"></script>
   <script type="text/javascript" src="/js/hloader.js"></script>
+  <script type="text/javascript" src="/js/hdate.js"></script>
+  <script type="text/javascript" src="/js/graph.js"></script>
 
   <%
   const income=funds.map(x=> x.income).reduce((total,x)=> total+x);
@@ -44,14 +46,9 @@
     {className:'outgo', title:'ΕΞΟΔΑ', alterIcon:'-', amount:shaped(outgo), percent:pcent(outgo, income).toFixed(0)+'%', more:funds.map(x=> {return {name:x.name, amount:shaped(x.outgo)}})},
     {className:(income>outgo?'income':income<outgo?'outgo':'balance'), title:'ΥΠΟΛΟΙΠΟ', alterIcon:'=', amount:shaped(income-outgo), percent:pcent(income-outgo, income).toFixed(0)+'%', more:funds.map(x=> {return {name:x.name, amount:shaped(x.income-x.outgo)}})}
   ]; 
-
-  let graph=new GraphModule.GraphBars('total');
-  graph.title=`ΣΥΝΟΛΑ (${from}-${till})`;
-  graph.margin.bottom=30;
-  graph.data=total;
+  let graph={title:`ΣΥΝΟΛΑ (${from}-${till})`, data:total};
   graph.data.forEach(x=> x.name=x.title);
-  title=graph.process(); %>
-
+  title=`<data class='total' value='${JSON.stringify(graph)}'></data>`%>
   <% include ./parts/section-head.ejs %>
   <% for (let i=0; i<total.length; i++) {
     title=total[i].title;
@@ -66,13 +63,9 @@
   <% include ./parts/section-foot.ejs %>
 
   <% className='income';
-  graph=new GraphModule.GraphBars('income');
-  graph.title=`ΚΑΤΑΝΟΜΗ ΕΣΟΔΩΝ (${shaped(income)} €)`;
-  graph.margin.bottom=30;
-  graph.data=[];
-  genres.forEach(x=> x.inout===1?graph.data.push({name:x.name, amount:x.amount, percent:pcent(x.amount, income).toFixed(0)+'%'}):null);
-  title=graph.process(); %>
-
+  graph={title:`ΚΑΤΑΝΟΜΗ ΕΣΟΔΩΝ (${shaped(income)} €)`, data:[]};
+  genres.forEach(x=> x.inout===1?graph.data.push({className:className, name:x.name, amount:x.amount, percent:pcent(x.amount, income).toFixed(0)+'%'}):null);
+  title=`<data class='income' value='${JSON.stringify(graph)}'></data>`%>
   <% include ./parts/section-head.ejs %>
   <% for (genre of genres) {
     if (genre.inout!==1) continue;
@@ -90,13 +83,9 @@
   <% include ./parts/section-foot.ejs %>
 
   <% className='outgo';
-  graph=new GraphModule.GraphBars('outgo');
-  graph.title=`ΚΑΤΑΝΟΜΗ ΕΞΟΔΩΝ (${shaped(outgo)} €)`;
-  graph.margin.bottom=30;
-  graph.data=[];
-  genres.forEach(x=> x.inout===2?graph.data.push({name:x.name, amount:x.amount, percent:pcent(x.amount, outgo).toFixed(0)+'%'}):null);
-  title=graph.process(); %>
-
+  graph={title:`ΚΑΤΑΝΟΜΗ ΕΞΟΔΩΝ (${shaped(outgo)} €)`, data:[]};
+  genres.forEach(x=> x.inout===2?graph.data.push({className:className, name:x.name, amount:x.amount, percent:pcent(x.amount, outgo).toFixed(0)+'%'}):null);
+  title=`<data class='outgo' value='${JSON.stringify(graph)}'></data>`%>
   <% include ./parts/section-head.ejs %>
   <% for (genre of genres) {
     if (genre.inout!==2) continue;
@@ -114,17 +103,13 @@
   <% include ./parts/section-foot.ejs %>
 
   <% className='balance';
-  graph=new GraphModule.GraphBars('balance');
-  graph.title=`ΚΑΤΑΝΟΜΗ ΥΠΟΛΟΙΠΟΥ (${shaped(balance)} €)`;
-  graph.margin.bottom=30;
-  graph.data=funds; 
+  graph={title:`ΚΑΤΑΝΟΜΗ ΥΠΟΛΟΙΠΟΥ (${shaped(balance)} €)`, data:funds};
   for (fund of graph.data) {
     fund.className=(fund.income>fund.outgo)?'income':(fund.income<fund.outgo)?'outgo':'balance';
     fund.percent=pcent(fund.income-fund.outgo, balance).toFixed(0)+'%';
     fund.amount=shaped(fund.income-fund.outgo);
   }
-  title=graph.process(); %>
-
+  title=`<data class='balance' value='${JSON.stringify(graph)}'></data>`%>
   <% include ./parts/section-head.ejs %>
   <% for (fund of funds) {
     title=fund.name;
@@ -136,18 +121,8 @@
     more=[{name:'ΕΣΟΔΑ', amount:shaped(fund.income)},{name:'ΕΞΟΔΑ', amount:shaped(fund.outgo)}]; %>
     <% include ./parts/article.ejs %>    
   <% } 
-  graph=new GraphModule.GraphScale('balance');
-  graph.title=`ΔΙΑΚΥΜΑΝΣΗ ΥΠΟΛΟΙΠΟΥ (${shaped(income-outgo)} €)`;
-  dates.forEach((x,i)=> i>0?dates[i].amount+=dates[i-1].amount:null);
-  if (dates[0].date!==HDate.raw(from)) 
-    dates.unshift({date:HDate.raw(from), amount:0});
-  if (dates[dates.length-1].date!==HDate.raw(till))
-    dates.push({date:HDate.raw(till), amount:dates[dates.length-1].amount});
-  dates.forEach((x,i)=> console.log(x.date+' : '+x.amount));
-  graph.margin.bottom=30;
-  graph.data=dates;
-  graph.HDate=HDate;
-  title=graph.process(); %>
+  graph={title:`ΔΙΑΚΥΜΑΝΣΗ ΥΠΟΛΟΙΠΟΥ (${shaped(income-outgo)} €)`, data:dates, from:from, till:till};
+  title=`<data class='balance2' value='${JSON.stringify(graph)}'></data>`%>
   <% include ./parts/section-foot.ejs %>
  
     </div>
@@ -156,5 +131,65 @@
   <footer class="info">
     <% include ./parts/footer.ejs %>
   </footer>
+
+  <script type="text/javascript">
+    function drawGraphs() {
+      let graph=new GraphBars();
+      let _=JSON.parse(document.querySelector('data.total').value);
+      graph.margin.bottom=30;
+      graph.title=_.title;
+      graph.data=_.data;
+      document.querySelector('data.total').innerHTML='<svg></svg>';
+      graph.svg=document.querySelector('data.total > svg');
+      graph.svg.innerHTML=graph.process();
+
+      graph=new GraphBars();
+      _=JSON.parse(document.querySelector('data.income').value);
+      graph.margin.bottom=30;
+      graph.title=_.title;
+      graph.data=_.data;
+      document.querySelector('data.income').innerHTML='<svg></svg>';
+      graph.svg=document.querySelector('data.income > svg');
+      graph.svg.innerHTML=graph.process();
+
+      graph=new GraphBars();
+      _=JSON.parse(document.querySelector('data.outgo').value);
+      graph.margin.bottom=30;
+      graph.title=_.title;
+      graph.data=_.data;
+      document.querySelector('data.outgo').innerHTML='<svg></svg>';
+      graph.svg=document.querySelector('data.outgo > svg');
+      graph.svg.innerHTML=graph.process();
+
+      graph=new GraphBars();
+      _=JSON.parse(document.querySelector('data.balance').value);
+      graph.margin.bottom=30;
+      graph.title=_.title;
+      graph.data=_.data;
+      document.querySelector('data.balance').innerHTML='<svg></svg>';
+      graph.svg=document.querySelector('data.balance > svg');
+      graph.svg.innerHTML=graph.process();
+
+      graph=new GraphScale();
+      _=JSON.parse(document.querySelector('data.balance2').value);
+      graph.margin.bottom=30;
+      graph.title=_.title;
+      graph.data=_.data;
+      let from=_.from;
+      let till=_.till;
+      graph.data.forEach((x,i)=> i>0?graph.data[i].amount+=graph.data[i-1].amount:null);
+      if (graph.data[0].date!==HDate.raw(from)) 
+        graph.data.unshift({date:HDate.raw(from), amount:0});
+      if (graph.data[graph.data.length-1].date!==HDate.raw(till))
+        graph.data.push({date:HDate.raw(till), amount:graph.data[graph.data.length-1].amount});
+      graph.data.forEach((x,i)=> console.log(x.date+' : '+x.amount));
+      document.querySelector('data.balance2').innerHTML='<svg></svg>';
+      graph.svg=document.querySelector('data.balance2 > svg');
+      graph.svg.innerHTML=graph.process();
+    }
+
+    window.onload=()=> drawGraphs();
+    window.onresize=()=> drawGraphs();
+  </script>
 </body>
 </html>

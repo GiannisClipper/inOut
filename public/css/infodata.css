@@ -138,10 +138,12 @@ article > .more span.amount {
   font-weight: 600;
 }
 
-/* svg */
+/* graph */
 
 svg {
   background-color: transparent;
+  width: 40rem;
+  height: 28rem;
 }
 
 svg text {

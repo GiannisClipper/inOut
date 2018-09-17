@@ -145,6 +145,7 @@
   margin: 1px;
   padding: 1px;
   border: 1px solid transparent;
+  font-size: 0.9rem;
 }
 
 .form .grid .titles > span {

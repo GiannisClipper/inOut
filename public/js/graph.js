@@ -1,16 +1,24 @@
 ﻿//graph.js
 
-exports.Graph=class Graph {
-  constructor(className=null) {
-    this.className=className;
-    this.width='400px';
-    this.height='280px';
+class Graph {
+  constructor(passval) {
+    this.svgVal=null;
+    if (passval) this.svg=passval;
     this.margin={top:null, left:null, bottom:null, right:null};
     this.range={steps:10, from:null, till:null, all:function() {return this.till-this.from;}};
     this.items={steps:12};
     this.title='';
     this.data=null;
   }
+
+  set svg(passval) {this.svgVal=passval;}
+  get svg() {return this.svgVal;}
+
+  set width(passval) {}
+  get width() {return parseInt(window.getComputedStyle(this.svg).getPropertyValue('width'))}; //this.svg.width.animVal.value;}
+
+  set height(passval) {}
+  get height() {return parseInt(window.getComputedStyle(this.svg).getPropertyValue('height'))}; //this.svg.height.animVal.value;}
 
   get marginT() {return (this.margin.top!==null)?this.margin.top:parseFloat(this.height)/10;}
   set marginT(passval) {this.margin.top=passval;}
@@ -27,15 +35,6 @@ exports.Graph=class Graph {
   graphWidth() {return parseFloat(this.width)-this.marginL-this.marginR;}
   graphHeight() {return parseFloat(this.height)-this.marginT-this.marginB;}
 
-//  roundIntDown(num) {
-//    num=Math.floor(num);
-//    let pow=num.toString().length-(num<0?2:1);
-//    num/=Math.pow(10, pow);
-//    num=Math.floor(num);
-//    num*=Math.pow(10, pow);
-//    return num;
-//  }
-
   roundIntUp(num) {
     num=Math.ceil(num);
     let pow=num.toString().length-(num<0?2:1);
@@ -49,7 +48,7 @@ exports.Graph=class Graph {
     if (!this.range.from || !this.range.till) {
       this.range.from=0;
       this.range.till=0;
-      for (row of this.data) { 
+      for (let row of this.data) { 
         parseFloat(row.amount)<this.range.from?this.range.from=row.amount:null;
         parseFloat(row.amount)>this.range.till?this.range.till=row.amount:null;
       }
@@ -57,8 +56,6 @@ exports.Graph=class Graph {
     this.range.steps=Math.ceil(this.range.all()/step)+1; 
     this.range.from=step*Math.floor(this.range.from/step);
     this.range.till=this.range.from+(step*this.range.steps);
-//      this.range.from=this.roundIntDown(this.range.from);
-//      this.range.till=this.roundIntUp(this.range.till);
    }
   }
 
@@ -95,53 +92,53 @@ exports.Graph=class Graph {
   process() {
     this.calcRange();
     this.calcItems();
-    let retval=`<svg class="${this.className}" style="height:${this.height}; width:${this.width};">`;
+//    let retval=`<svg class="${this.className}" style="height:${this.height}; width:${this.width};">`;
+    let retval=``;
     retval+=`<text class="title" x="${(this.marginL+this.graphWidth()+this.marginR)/2}" y="${this.marginT/2}" text-anchor="middle">${this.title}</text>`;
     retval+=this.drawRange();
     retval+=this.drawItems();
     retval+=this.drawGraph();
-    retval+=`</svg>`;
+//    retval+=`</svg>`;
     return retval;
   }
 }
 
-exports.GraphScale=class GraphScale extends exports.Graph {
-  constructor(className=null) {
-    super(className);
+class GraphScale extends Graph {
+  constructor(passval) {
+    super(passval);
     this.items.labels=[];
-    this.HDate=null;
   }
 
   calcItems() {
-    if (this.HDate.days(this.data[0].date, this.data[this.data.length-1].date)<=31) {
-      this.items.steps=this.HDate.days(this.data[0].date, this.data[this.data.length-1].date);
+    if (HDate.days(this.data[0].date, this.data[this.data.length-1].date)<=31) {
+      this.items.steps=HDate.days(this.data[0].date, this.data[this.data.length-1].date);
       for (let i=0; i<this.items.steps; i++)
-        this.items.labels.push(this.HDate.day(this.HDate.skipDays(this.data[0].date,i)));
+        this.items.labels.push(HDate.day(HDate.skipDays(this.data[0].date,i)));
     }
-    else if (this.HDate.months(this.data[0].date, this.data[this.data.length-1].date)<=12) {
-      this.items.steps=this.HDate.months(this.data[0].date, this.data[this.data.length-1].date);
+    else if (HDate.months(this.data[0].date, this.data[this.data.length-1].date)<=12) {
+      this.items.steps=HDate.months(this.data[0].date, this.data[this.data.length-1].date);
       for (let i=0; i<this.items.steps; i++)
-        this.items.labels.push(this.HDate.monthName(this.HDate.month(this.HDate.skipMonths(this.data[0].date,i))).substr(0,3));
+        this.items.labels.push(HDate.monthName(HDate.month(HDate.skipMonths(this.data[0].date,i))).substr(0,3));
     }
   }
 
   drawItems() {
     let retval='';
-    let xWidth=this.graphWidth()/this.HDate.days(this.data[0].date, this.data[this.data.length-1].date);
+    let xWidth=this.graphWidth()/HDate.days(this.data[0].date, this.data[this.data.length-1].date);
     let x1=0;
     let y1=0;
     let x2=0;
     let y2=0;
     let itemDate=null;
     for (let i=0; i<=this.items.steps; ++i) {
-      if (this.HDate.days(this.data[0].date, this.data[this.data.length-1].date)<=31)
-        itemDate=this.HDate.skipDays(this.data[0].date,i-1);
+      if (HDate.days(this.data[0].date, this.data[this.data.length-1].date)<=31)
+        itemDate=HDate.skipDays(this.data[0].date,i-1);
       else {
-        itemDate=this.HDate.skipMonths(this.data[0].date,i-1);
-        itemDate=this.HDate.numToRaw(this.HDate.year(itemDate), this.HDate.month(itemDate), this.HDate.maxDay(this.HDate.month(itemDate), this.HDate.year(itemDate)));
+        itemDate=HDate.skipMonths(this.data[0].date,i-1);
+        itemDate=HDate.numToRaw(HDate.year(itemDate), HDate.month(itemDate), HDate.maxDay(HDate.month(itemDate), HDate.year(itemDate)));
       }
-      x1=Math.floor(this.marginL+(this.HDate.days(this.data[0].date, itemDate)*xWidth));
-      x2=Math.floor(this.marginL+(this.HDate.days(this.data[0].date, itemDate)*xWidth));
+      x1=Math.floor(this.marginL+(HDate.days(this.data[0].date, itemDate)*xWidth));
+      x2=Math.floor(this.marginL+(HDate.days(this.data[0].date, itemDate)*xWidth));
       y1=this.marginT;
       y2=this.marginT+this.graphHeight();
       retval+=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" style="stroke:rgb(128, 128, 128); stroke-width:1" />`;
@@ -156,12 +153,12 @@ exports.GraphScale=class GraphScale extends exports.Graph {
 
   drawGraph() {
     let retval='';
-    let xWidth=this.graphWidth()/this.HDate.days(this.data[0].date, this.data[this.data.length-1].date);
+    let xWidth=this.graphWidth()/HDate.days(this.data[0].date, this.data[this.data.length-1].date);
     let x=0;
     let y=0;
     let points='';
     for (let i=0; i<this.data.length; i++) {
-      x=Math.floor(this.marginL+(this.HDate.days(this.data[0].date, this.data[i].date)*xWidth)-(xWidth/2));
+      x=Math.floor(this.marginL+(HDate.days(this.data[0].date, this.data[i].date)*xWidth)-(xWidth/2));
       y=Math.floor(this.marginT+this.graphHeight()-(this.graphHeight()*Math.abs((this.data[i].amount-this.range.from)/this.range.all())));
       points+=`${x},${y} `;
     }
@@ -170,9 +167,9 @@ exports.GraphScale=class GraphScale extends exports.Graph {
   }
 }
 
-exports.GraphBars=class GraphScale extends exports.Graph {
-  constructor(className=null) {
-    super(className);
+class GraphBars extends Graph {
+  constructor(passval) {
+    super(passval);
     this.items.steps=8;
     this.range.tillSum=false;
   }
@@ -183,7 +180,7 @@ exports.GraphBars=class GraphScale extends exports.Graph {
     else {
       this.range.from=0;
       this.range.till=0;
-      for (row of this.data)
+      for (let row of this.data)
         this.range.till+=parseFloat(row.amount);
       let step=this.roundIntUp((this.range.all())/this.range.steps);
       this.range.steps=Math.ceil(this.range.all()/step)+1; 
@@ -243,5 +240,3 @@ exports.GraphBars=class GraphScale extends exports.Graph {
     return retval;
   }
 }
-
-//module.exports=Graph;

@@ -81,5 +81,3 @@ class HDate {
     return retval;
   }
 }
-
-module.exports=HDate;
