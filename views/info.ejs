@@ -21,7 +21,7 @@
     <div class="container">
       <div class="info">
         <div>Χρονικό διάστημα</div>
-        <div><input type="text" class="period" value=1/1-31/12/18></div>
+        <div><input type="text" class="period"></div>
         <input type="button" class="process" value="Επεξεργασία">
       </div>
     </div>
@@ -52,6 +52,8 @@
       const period=new InputDate();
       period.input=document.querySelector('.info .period');
       document.querySelector('.info .process').onclick=()=> process(period);
+      period.rawFrom='20180101';
+      period.rawTill='20181231';
       period.input.focus();
     }
  

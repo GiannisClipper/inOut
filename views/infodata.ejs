@@ -136,7 +136,6 @@
     function drawGraphs() {
       let graph=new GraphBars();
       let _=JSON.parse(document.querySelector('data.total').value);
-      graph.margin.bottom=30;
       graph.title=_.title;
       graph.data=_.data;
       document.querySelector('data.total').innerHTML='<svg></svg>';
@@ -145,7 +144,6 @@
 
       graph=new GraphBars();
       _=JSON.parse(document.querySelector('data.income').value);
-      graph.margin.bottom=30;
       graph.title=_.title;
       graph.data=_.data;
       document.querySelector('data.income').innerHTML='<svg></svg>';
@@ -154,7 +152,6 @@
 
       graph=new GraphBars();
       _=JSON.parse(document.querySelector('data.outgo').value);
-      graph.margin.bottom=30;
       graph.title=_.title;
       graph.data=_.data;
       document.querySelector('data.outgo').innerHTML='<svg></svg>';
@@ -163,7 +160,6 @@
 
       graph=new GraphBars();
       _=JSON.parse(document.querySelector('data.balance').value);
-      graph.margin.bottom=30;
       graph.title=_.title;
       graph.data=_.data;
       document.querySelector('data.balance').innerHTML='<svg></svg>';
@@ -172,7 +168,6 @@
 
       graph=new GraphScale();
       _=JSON.parse(document.querySelector('data.balance2').value);
-      graph.margin.bottom=30;
       graph.title=_.title;
       graph.data=_.data;
       let from=_.from;
@@ -185,6 +180,14 @@
       graph.data.forEach((x,i)=> console.log(x.date+' : '+x.amount));
       document.querySelector('data.balance2').innerHTML='<svg></svg>';
       graph.svg=document.querySelector('data.balance2 > svg');
+      graph.svg.innerHTML=graph.process();
+
+      graph=new GraphPie();
+      _=JSON.parse(document.querySelector('data.outgo').value);
+      graph.title=_.title;
+      graph.data=_.data;
+      document.querySelector('data.balance2').innerHTML+='<br><br><br><svg></svg>';
+      graph.svg=document.querySelector('data.balance2 > svg:last-child');
       graph.svg.innerHTML=graph.process();
     }
 
