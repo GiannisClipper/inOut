@@ -16,4 +16,3 @@ npm install simplecrypt --save
 npm install ejs --save
 
 npm install pg --save
----------
