@@ -19,4 +19,6 @@
 
 `git clone git@github.com:GiannisClipper/inOut.git`
 
+`cd inOut`
+
 `npm install`
